@@ -13,6 +13,7 @@ import jxl.read.biff.BiffException;
 
 import com.jpower.cms.dao.InventoryApplicationDetailVO;
 import com.jpower.cms.dao.InventoryApplicationVO;
+import com.jpower.cms.dao.MaterialDAO;
 import com.jpower.cms.upload.common.DBAccess;
 import com.jpower.cms.upload.common.DBUtil;
 import com.jpower.cms.upload.common.InventoryApplicationDBProcessor;
@@ -23,6 +24,10 @@ import com.jpower.cms.upload.excel.InventoryApplicationDetailProcessor;
 import com.jpower.cms.upload.excel.InventoryApplicationProcessor;
 
 public class Main1 {
+	
+	public static void execute_4() {
+		MaterialDAO.deleteRecByRefIdx(1328);
+	}
 	
 	public static void execute_3() {
 		Connection conn;
@@ -57,12 +62,16 @@ public class Main1 {
 	public static void execute_1() {
 		List<InventoryApplicationVO> voList = null;
 		List<InventoryApplicationDetailVO> voDetailList = null;
-		int seq;
+		int seq, updateSeq;
 		
 		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-walkthrough-20131229.xls");
 		seq = DBUtil.getUploadSequence();
 		MemCache.setUploadSeq(seq);
+		updateSeq = DBUtil.getUploadSequence();
+		MemCache.setChangeLogKey(updateSeq);
+		
 		System.out.println("Seq : " + seq);
+		System.out.println("ChangeLogKey : " + updateSeq);
 		
 		try {
 			Workbook wkb = Workbook.getWorkbook(f);
@@ -97,7 +106,8 @@ public class Main1 {
 	public static void main(String[] args) {
 //		Main1.execute_1();
 //		Main1.execute_2();
-		Main1.execute_3();
+//		Main1.execute_3();
+		Main1.execute_4();
 
 	}
 
