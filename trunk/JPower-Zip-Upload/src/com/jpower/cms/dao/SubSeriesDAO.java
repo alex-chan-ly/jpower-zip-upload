@@ -18,8 +18,9 @@ public class SubSeriesDAO {
 	
 	public static String sql3 = "insert into jpt_sub_series (ref_idx, sub_series_id, material_id, sub_series_image_small, sub_series_image_large, "
 		+ "rec_status, create_date, update_date, create_user, update_user) "
-		+ "select ref_idx, sub_series, sub_series_id, sub_series_image_small, sub_series_image_large, 'ACT', "
-		+ "current_timestamp, current_timestamp, 'john', 'john' from jpw_application where tran_action = 'ADD' and tran_status = 'AWV' and ref_idx = ?";
+		+ "select app.ref_idx, app.sub_series, app.sub_series_id, app.sub_series_image_small, app.sub_series_image_large, 'ACT', "
+		+ "current_timestamp, current_timestamp, 'john', 'john' from jpw_application app where app.tran_action = 'ADD' and app.tran_status = 'AWV' and app.ref_idx = ? "
+		+ "and not exists (select * from jpt_sub_series ss where ss.material_id = app.sub_series_id and ss.rec_status = 'ACT')";
 	
 	public static String sql4 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) " 
 			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'ADDITION-SUB_SERIES', "
