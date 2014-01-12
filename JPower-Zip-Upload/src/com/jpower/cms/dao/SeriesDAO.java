@@ -13,7 +13,7 @@ public class SeriesDAO {
 			+ "rec_status, create_date, update_date, create_user, update_user) "
 			+ "select distinct ref_idx, app.series, app.series_label_eng, app.series_label_chin, app.series_image_small, app.series_image_large, 'ACT', "
 			+ "current_timestamp, current_timestamp, 'john', 'john' from jpw_application app where app.tran_action = 'ADD' and app.tran_status = 'AWV' and app.ref_idx = ? "
-			+ "and not exists (select * from jpt_series s where s.series_id = app.series)";
+			+ "and not exists (select * from jpt_series s where s.series_id = app.series and s.rec_status = 'ACT')";
 	
 	public static String sql2 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
 			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'ADDITION-SERIES', " 
