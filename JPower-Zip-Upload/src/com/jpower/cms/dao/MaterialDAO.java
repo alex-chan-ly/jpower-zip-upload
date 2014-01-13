@@ -76,7 +76,8 @@ public class MaterialDAO {
 			
 			if (cnt > 0) {
 				ps1 = conn.prepareStatement(sql4);
-				ps1.setInt(1, MemCache.getChangeLogKey());
+//				ps1.setInt(1, MemCache.getChangeLogKey());
+				ps1.setInt(1, refIdx);
 				ps1.setInt(2, refIdx);
 				ps1.executeUpdate();
 			}

@@ -14,14 +14,14 @@ public class RltCategorySeriesDAO {
 			+ "(select distinct ref_idx, category, series, series_seq from jpw_application where tran_action = 'ADD' and tran_status = 'AWV' and ref_idx = ?) drv,"
 			+ "(select category_pk, category_id from jpt_category where rec_status = 'ACT') master_cat,"
 			+ "(select series_pk, series_id from jpt_series where rec_status = 'ACT') master_series "
-			+ "where drv.category = master_cat.category_id and drv.series = master_series.series_id"
+			+ "where drv.category = master_cat.category_id and drv.series = master_series.series_id "
 			+ "and not exists (select * from jpt_rlt_category_series core where core.category_pk = master_cat.category_pk and core.series_pk = master_series.series_pk "
 			+ "and core.cat_series_seq = drv.series_seq)";
 			
 	public static String sql2 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
 			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'ADDITION-RLT-CATEGORY_SERIES', "
 			+ "'Category_pk : ' || TRIM(CAST(CAST(category_pk AS CHAR(10))AS VARCHAR(10))) || '; Series_pk : ' || TRIM(CAST(CAST(series_pk AS CHAR(10))AS VARCHAR(10))) || '; Category_Series_Seq : ' || TRIM(CAST(CAST(cat_series_seq AS CHAR(10))AS VARCHAR(10))) || ' being added', "
-			+ "current_timestamp, current_timestamp from jpt_rlt_category_series where ref_idx = ? and rec_status = 'ACT'";
+			+ "'', current_timestamp, current_timestamp from jpt_rlt_category_series where ref_idx = ? and rec_status = 'ACT'";
 
 	public static String sql3 = "update jpt_rlt_category_series set ref_idx = ?, rec_status = 'DEL', update_date = current_timestamp where rec_status = 'ACT' "
 			+ "and series_pk in (select mast_s.series_pk from jpt_series mast_s where mast_s.rec_status = 'DEL' and mast_s.ref_idx = ? )";

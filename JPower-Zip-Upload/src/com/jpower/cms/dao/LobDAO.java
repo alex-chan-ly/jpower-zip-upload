@@ -7,27 +7,26 @@ import java.sql.SQLException;
 import com.jpower.cms.upload.common.DBAccess;
 import com.jpower.cms.upload.common.MemCache;
 
-public class SeriesDAO {
+public class LobDAO {
 	
-	public static String sql1 = "insert into jpt_series (ref_idx, series_id, series_label_eng, series_label_chin, series_image_small, series_image_large, "
-			+ "rec_status, create_date, update_date, create_user, update_user) "
-			+ "select distinct ref_idx, app.series, app.series_label_eng, app.series_label_chin, app.series_image_small, app.series_image_large, 'ACT', "
-			+ "current_timestamp, current_timestamp, 'john', 'john' from jpw_application app where app.tran_action = 'ADD' and app.tran_status = 'AWV' and app.ref_idx = ? "
-			+ "and not exists (select * from jpt_series s where s.series_id = app.series and s.rec_status = 'ACT')";
+	public static String sql1 = "insert into jpt_lob (ref_idx, lob_id, sub_lob_id, sub_lob_label_eng, sub_lob_label_chin, rec_status, create_date, update_date, create_user, update_user) "
+			+ "select distinct ref_idx, app.lob, app.sub_lob, app.sub_lob_label_eng, app.sub_lob_label_chin, 'ACT', "
+			+ "current_timestamp, current_timestamp, 'john', 'john' from jpw_application app where app.tran_action = 'ADD' and app.tran_status = 'AWV' and app.ref_idx = ?"
+			+ "and not exists (select * from jpt_lob l where l.lob_id = app.lob and l.sub_lob_id = app.sub_lob and l.rec_status = 'ACT')";
 	
 	public static String sql2 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
-			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'ADDITION-SERIES', " 
-			+ "'Series_pk : ' || TRIM(CAST(CAST(series_pk AS CHAR(10))AS VARCHAR(10))) || '; Series ID : ' || series_id  || ' being added', '', "
-			+ "current_timestamp, current_timestamp from jpt_series where rec_status = 'ACT' and ref_idx = ?";
+			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'ADDITION-LOB', "
+			+ "'LOB_pk : ' || TRIM(CAST(CAST(lob_pk AS CHAR(10))AS VARCHAR(10))) || '; LOB_ID : ' || LOB_id || '; SUB_LOB_ID : ' || sub_lob_id || ' being added', '', "
+			+ "current_timestamp, current_timestamp from jpt_lob where rec_status = 'ACT' and ref_idx = ?";
 	
-	public static String sql3 = "update jpt_series set ref_idx = ?, rec_status = 'DEL', update_date = current_timestamp where rec_status = 'ACT' and series_pk in ("
-			+ "select distinct series_pk from jpt_rlt_series_sub_series where rec_status = 'DEL' and ref_idx= ? except "
-			+ "select distinct series_pk from jpt_rlt_series_sub_series where rec_status = 'ACT' and ref_idx= ?)";
-	
+	public static String sql3 = "update jpt_lob set ref_idx = ?, rec_status = 'DEL', update_date = current_timestamp where rec_status = 'ACT' and lob_pk in ("
+			+ "select distinct lob_pk from jpt_rlt_lob_category where rec_status = 'DEL' and ref_idx= ? except "
+			+ "select distinct lob_pk from jpt_rlt_lob_category where rec_status = 'ACT' and ref_idx= ?)";
+		
 	public static String sql4 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
-			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-SERIES', " 
-			+ "'Series_pk : ' || TRIM(CAST(CAST(series_pk AS CHAR(10))AS VARCHAR(10))) || '; Series ID : ' || series_id  || ' being deleted', '', "
-			+ "current_timestamp, current_timestamp from jpt_series where rec_status = 'DEL' and ref_idx = ?";
+			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-LOB', " 
+			+ "'Lob_pk : ' || TRIM(CAST(CAST(lob_pk AS CHAR(10))AS VARCHAR(10))) || '; LOB ID : ' || lob_id || '; Sub LOB ID : ' || sub_lob_id  || ' being deleted', '', "
+			+ "current_timestamp, current_timestamp from jpt_lob where rec_status = 'DEL' and ref_idx = ?";
 
 	
 
@@ -88,6 +87,10 @@ public class SeriesDAO {
 				ps1.setInt(1, refIdx);
 				ps1.setInt(2, refIdx);
 				cnt = ps1.executeUpdate();
+			}
+			
+			if (cnt > 0) {
+				RltSeriesSubSeriesDAO.addRecByRefIdx(refIdx);
 			}
 			
 		} catch (SQLException e) {
