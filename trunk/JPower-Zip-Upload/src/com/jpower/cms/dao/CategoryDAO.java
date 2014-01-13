@@ -20,7 +20,7 @@ public class CategoryDAO {
 			+ "'Category_pk : ' || TRIM(CAST(CAST(category_pk AS CHAR(10))AS VARCHAR(10))) || '; Category_ID : ' || category_id  || ' being added', '', "
 			+ "current_timestamp, current_timestamp from jpt_category where rec_status = 'ACT' and ref_idx = ?";
 	
-	public static String sql3 = "update jpt_category set ref_idx = ?, rec_status = 'DEL', update_date = current_timestamp where category_pk in ("
+	public static String sql3 = "update jpt_category set ref_idx = ?, rec_status = 'DEL', update_date = current_timestamp where rec_status = 'ACT' and category_pk in ("
 			+ "select distinct category_pk from jpt_rlt_category_series where rec_status = 'DEL' and ref_idx= ? except "
 			+ "select distinct category_pk from jpt_rlt_category_series where rec_status = 'ACT' and ref_idx= ?)";
 	
