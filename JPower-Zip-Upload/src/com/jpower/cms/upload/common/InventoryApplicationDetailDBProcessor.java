@@ -7,8 +7,8 @@ import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 
-import com.jpower.cms.dao.InventoryApplicationDetailVO;
-import com.jpower.cms.dao.InventoryApplicationVO;
+import com.jpower.cms.vo.InventoryApplicationDetailVO;
+import com.jpower.cms.vo.InventoryApplicationVO;
 
 public class InventoryApplicationDetailDBProcessor {
        

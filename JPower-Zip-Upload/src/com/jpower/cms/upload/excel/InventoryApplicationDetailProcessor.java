@@ -6,9 +6,9 @@ import java.util.List;
 import jxl.Cell;
 import jxl.Sheet;
 
-import com.jpower.cms.dao.InventoryApplicationDetailVO;
-import com.jpower.cms.dao.InventoryApplicationVO;
 import com.jpower.cms.upload.common.Util;
+import com.jpower.cms.vo.InventoryApplicationDetailVO;
+import com.jpower.cms.vo.InventoryApplicationVO;
 
 public class InventoryApplicationDetailProcessor {
 	

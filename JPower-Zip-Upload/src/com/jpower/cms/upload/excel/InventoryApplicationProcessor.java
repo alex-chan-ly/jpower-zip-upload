@@ -6,8 +6,8 @@ import java.util.List;
 import jxl.Cell;
 import jxl.Sheet;
 
-import com.jpower.cms.dao.InventoryApplicationVO;
 import com.jpower.cms.upload.common.Util;
+import com.jpower.cms.vo.InventoryApplicationVO;
 
 public class InventoryApplicationProcessor {
 	
@@ -38,6 +38,8 @@ public class InventoryApplicationProcessor {
 		
 		vo.setLob(row[columnIndex++].getContents());
 		vo.setSubLob(row[columnIndex++].getContents());
+		vo.setSubLobLabelEng(row[columnIndex++].getContents());
+		vo.setSubLobLabelChin(row[columnIndex++].getContents());
 		vo.setCategory(row[columnIndex++].getContents());
 		vo.setCategorySeq(Short.parseShort(row[columnIndex++].getContents()));
 		vo.setCategoryLabelEng(row[columnIndex++].getContents());
