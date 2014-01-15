@@ -22,7 +22,8 @@ public class CategoryDAO {
 	
 	public static String sql3 = "update jpt_category set ref_idx = ?, rec_status = 'DEL', update_date = current_timestamp where rec_status = 'ACT' and category_pk in ("
 			+ "select distinct category_pk from jpt_rlt_category_series where rec_status = 'DEL' and ref_idx= ? except "
-			+ "select distinct category_pk from jpt_rlt_category_series where rec_status = 'ACT' and ref_idx= ?)";
+			+ "select distinct category_pk from jpt_rlt_category_series where rec_status = 'ACT' and category_pk in ("
+			+ "select distinct category_pk from jpt_rlt_category_series where rec_status = 'DEL' and ref_idx= ?))";
 	
 	public static String sql4 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
 			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-CATEGORY', " 

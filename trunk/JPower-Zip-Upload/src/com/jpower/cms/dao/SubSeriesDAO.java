@@ -9,7 +9,7 @@ import com.jpower.cms.upload.common.MemCache;
 
 public class SubSeriesDAO {
 	
-	public static String sql1 = "update jpt_sub_series set ref_idx = ?, rec_status = 'DEL', update_date = current_timestamp where rec_status = 'ACT' and sub_series_id in ("
+	public static String sql1 = "update jpt_sub_series set ref_idx = ?, rec_status = 'DEL', update_date = current_timestamp where rec_status = 'ACT' and material_id in ("
 			+ "select sub_series_id from jpw_application where tran_action = 'DEL' and ref_idx = ?)";
 	
 //	public static String sql2 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
