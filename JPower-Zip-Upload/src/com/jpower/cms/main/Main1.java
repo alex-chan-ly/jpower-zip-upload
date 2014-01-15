@@ -197,15 +197,56 @@ public class Main1 {
 		}
 	}	
 	
+	public static void execute_inventory1() {
+		List<InventoryApplicationVO> voList = null;
+		List<InventoryApplicationDetailVO> voDetailList = null;
+		int seq, updateSeq;
+		
+		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-inventory-1.xls");
+		seq = DBUtil.getUploadSequence();
+		MemCache.setUploadSeq(seq);
+		updateSeq = DBUtil.getUploadSequence();
+		MemCache.setChangeLogKey(updateSeq);
+		
+		System.out.println("Seq : " + seq);
+		System.out.println("ChangeLogKey : " + updateSeq);
+		
+		try {
+			Workbook wkb = Workbook.getWorkbook(f);
+			for (int sheet = 0; sheet < wkb.getNumberOfSheets(); sheet++) {
+				Sheet s = wkb.getSheet(sheet);
+				System.out.println("Sheet name : " + s.getName());
+				if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION)) {
+					voList = InventoryApplicationProcessor.processApplicationSheet(s);
+					if (!voList.isEmpty()) {
+						InventoryApplicationDBProcessor.saveToDB(voList);
+					}
+					
+				} else if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION_DETAIL)) {
+					voDetailList = InventoryApplicationDetailProcessor.processApplicationSheet(s);
+					if (!voDetailList.isEmpty()) {
+						InventoryApplicationDetailDBProcessor.saveToDB(voDetailList);
+					}
+				}
+			}
+
+		} catch (BiffException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}		
 	public static void execute_A2() {
-		MaterialDAO.deleteRecByRefIdx(2128);
-		SubSeriesDAO.deleteRecByRefIdx(2128);
-		RltSeriesSubSeriesDAO.deleteRecByRefIdx(2128);
-		SeriesDAO.deleteRecByRefIdx(2128);
-		RltCategorySeriesDAO.deleteRecByRefIdx(2128);
-		CategoryDAO.deleteRecByRefIdx(2128);
-		RltLobCategoryDAO.deleteRecByRefIdx(2128);
-		LobDAO.deleteRecByRefIdx(2128);
+		MaterialDAO.deleteRecByRefIdx(3528);
+		SubSeriesDAO.deleteRecByRefIdx(3528);
+		RltSeriesSubSeriesDAO.deleteRecByRefIdx(3528);
+		SeriesDAO.deleteRecByRefIdx(3528);
+		RltCategorySeriesDAO.deleteRecByRefIdx(3528);
+		CategoryDAO.deleteRecByRefIdx(3528);
+		RltLobCategoryDAO.deleteRecByRefIdx(3528);
+		LobDAO.deleteRecByRefIdx(3528);
 	}
 	
 	public static void execute_A3() {
@@ -222,17 +263,17 @@ public class Main1 {
 		RltLobCategoryDAO.addRecByRefIdx(2728);
 	}	
 	public static void execute_MAY3() {
-		MaterialDAO.addRecByRefIdx(3428);
-		SubSeriesDAO.addRecByRefIdx(3428);
-		SeriesDAO.addRecByRefIdx(3428);
-		RltSeriesSubSeriesDAO.addRecByRefIdx(3428);
+		MaterialDAO.addRecByRefIdx(3328);
+		SubSeriesDAO.addRecByRefIdx(3328);
+		SeriesDAO.addRecByRefIdx(3328);
+		RltSeriesSubSeriesDAO.addRecByRefIdx(3328);
 	}
 	
 	public static void execute_MAY4() {
-		CategoryDAO.addRecByRefIdx(3428);
-		RltCategorySeriesDAO.addRecByRefIdx(3428);
-		LobDAO.addRecByRefIdx(3428);
-		RltLobCategoryDAO.addRecByRefIdx(3428);
+		CategoryDAO.addRecByRefIdx(3328);
+		RltCategorySeriesDAO.addRecByRefIdx(3328);
+		LobDAO.addRecByRefIdx(3328);
+		RltLobCategoryDAO.addRecByRefIdx(3328);
 	}	
 	
 	/**
@@ -247,9 +288,11 @@ public class Main1 {
 //		Main1.execute_A1();
 //		Main1.execute_A2();
 //		Main1.execute_MAY1();
-		Main1.execute_MAY3();
-		Main1.execute_MAY4();
-//		
+//		Main1.execute_MAY3();
+//		Main1.execute_MAY4();
+
+//		execute_inventory1();
+		execute_A2();
 
 	}
 
