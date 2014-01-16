@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.jpower.cms.upload.common.DBAccess;
+
 public class ApplicationDetailMaterialValidator {
 //	create PROCEDURE CHECK_APPLICATION_UPLOAD_SUB_SERIES(in id int )
 //	  PARAMETER STYLE JAVA
@@ -18,9 +20,10 @@ public class ApplicationDetailMaterialValidator {
 
 //	Execute Main1.execute_xxx()
 		
-	public static void checkExistForAdd(int uploadSeq, int[] recCount) {
+	public static int checkExistForAdd(int uploadSeq) {
 		Connection conn;
 		PreparedStatement ps1 = null;
+		int recCount = 0;
 				
 		StringBuffer sb = new StringBuffer();
 		sb.append("insert into jpt_log(ref_no, severity, category, log_message, remarks_1, create_date, update_date) ");
@@ -30,12 +33,11 @@ public class ApplicationDetailMaterialValidator {
 		sb.append("and exists (select * from jpt_material b where b.rec_status = 'ACT' and b.material_id = a.sub_series_id)");
 
 		try {
-			conn = DriverManager.getConnection("jdbc:default:connection");
+//			conn = DriverManager.getConnection("jdbc:default:connection");
+			conn = DBAccess.getDBConnection();
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
-			int cnt = ps1.executeUpdate();
-			
-			recCount[0] = cnt;
+			recCount = ps1.executeUpdate();
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -47,12 +49,14 @@ public class ApplicationDetailMaterialValidator {
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
-		}		
+		}
+		return recCount;		
 	}
 
-	public static void checkNotExistForDel(int uploadSeq, int[] recCount) {
+	public static int checkNotExistForDel(int uploadSeq) {
 		Connection conn;
 		PreparedStatement ps1 = null;
+		int recCount = 0;
 				
 		StringBuffer sb = new StringBuffer();
 		sb.append("insert into jpt_log(ref_no, severity, category, log_message, remarks_1, create_date, update_date) ");
@@ -62,12 +66,11 @@ public class ApplicationDetailMaterialValidator {
 		sb.append("and not exists (select * from jpt_material b where b.rec_status = 'ACT' and b.material_id = a.sub_series_id)");
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:default:connection");
+//			conn = DriverManager.getConnection("jdbc:default:connection");
+			conn = DBAccess.getDBConnection();
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
-			int cnt = ps1.executeUpdate();
-			
-			recCount[0] = cnt;
+			recCount = ps1.executeUpdate();
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -79,6 +82,7 @@ public class ApplicationDetailMaterialValidator {
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
-		}		
+		}
+		return recCount;		
 	}
 }
