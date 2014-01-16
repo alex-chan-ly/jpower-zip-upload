@@ -239,14 +239,14 @@ public class Main1 {
 		}
 	}		
 	public static void execute_A2() {
-		MaterialDAO.deleteRecByRefIdx(3528);
-		SubSeriesDAO.deleteRecByRefIdx(3528);
-		RltSeriesSubSeriesDAO.deleteRecByRefIdx(3528);
-		SeriesDAO.deleteRecByRefIdx(3528);
-		RltCategorySeriesDAO.deleteRecByRefIdx(3528);
-		CategoryDAO.deleteRecByRefIdx(3528);
-		RltLobCategoryDAO.deleteRecByRefIdx(3528);
-		LobDAO.deleteRecByRefIdx(3528);
+		MaterialDAO.deleteRecByRefIdx(3928);
+		SubSeriesDAO.deleteRecByRefIdx(3928);
+		RltSeriesSubSeriesDAO.deleteRecByRefIdx(3928);
+		SeriesDAO.deleteRecByRefIdx(3928);
+		RltCategorySeriesDAO.deleteRecByRefIdx(3928);
+		CategoryDAO.deleteRecByRefIdx(3928);
+		RltLobCategoryDAO.deleteRecByRefIdx(3928);
+		LobDAO.deleteRecByRefIdx(3928);
 	}
 	
 	public static void execute_A3() {
