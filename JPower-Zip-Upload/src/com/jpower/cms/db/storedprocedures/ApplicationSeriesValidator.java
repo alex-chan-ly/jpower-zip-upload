@@ -46,6 +46,39 @@ public class ApplicationSeriesValidator {
 		return recCount;
 	}
 	
+	public static int checkInconsistentSeriesSequence(int uploadSeq) {
+		Connection conn;
+		int recCount = 0;
+		PreparedStatement ps1 = null;
+				
+		StringBuffer sb = new StringBuffer();
+		sb.append("insert into jpt_log(ref_no, severity, category, log_message, remarks_1, create_date, update_date) ");
+		sb.append("select distinct TRIM(CAST(CAST(main.ref_idx AS CHAR(10))AS VARCHAR(10))), 'Error', 'UPLOAD-APPLICATION', ");
+		sb.append("'Validation error (Series has inconsistent series sequence)', 'Series : ' || main.series ");
+		sb.append(", current_timestamp,current_timestamp from jpw_application main where main.ref_idx = ? and main.series in ( ");
+		sb.append("select a.series from (select  b.series, b.series_seq from jpw_application b  where b.ref_idx = ?");
+		sb.append("group by b.series, b.series_seq ) a group by a.series having count(*) >1)");
+
+		try {
+			conn = DBAccess.getDBConnection();
+			ps1 = conn.prepareStatement(sb.toString());
+			ps1.setInt(1, uploadSeq);
+			ps1.setInt(2, uploadSeq);
+			recCount = ps1.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if (ps1 != null) {ps1.close();}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}	
+		return recCount;
+	}
 	
 	public static void checkNotExistForDel(int uploadSeq, int[] recCount) {
 		Connection conn;
