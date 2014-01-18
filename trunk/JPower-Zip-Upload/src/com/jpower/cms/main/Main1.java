@@ -160,7 +160,7 @@ public class Main1 {
 		List<InventoryApplicationDetailVO> voDetailList = null;
 		int seq, updateSeq;
 		
-		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-13012014-May-Amend.xls");
+		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-14012014-May-Amend-20140118.xls");
 		seq = DBUtil.getUploadSequence();
 		MemCache.setUploadSeq(seq);
 		updateSeq = DBUtil.getUploadSequence();
@@ -263,17 +263,17 @@ public class Main1 {
 		RltLobCategoryDAO.addRecByRefIdx(2728);
 	}	
 	public static void execute_MAY3() {
-		MaterialDAO.addRecByRefIdx(3328);
-		SubSeriesDAO.addRecByRefIdx(3328);
-		SeriesDAO.addRecByRefIdx(3328);
-		RltSeriesSubSeriesDAO.addRecByRefIdx(3328);
+		MaterialDAO.addRecByRefIdx(4228);
+		SubSeriesDAO.addRecByRefIdx(4228);
+		SeriesDAO.addRecByRefIdx(4228);
+		RltSeriesSubSeriesDAO.addRecByRefIdx(4228);
 	}
 	
 	public static void execute_MAY4() {
-		CategoryDAO.addRecByRefIdx(3328);
-		RltCategorySeriesDAO.addRecByRefIdx(3328);
-		LobDAO.addRecByRefIdx(3328);
-		RltLobCategoryDAO.addRecByRefIdx(3328);
+		CategoryDAO.addRecByRefIdx(4228);
+		RltCategorySeriesDAO.addRecByRefIdx(4228);
+		LobDAO.addRecByRefIdx(4228);
+		RltLobCategoryDAO.addRecByRefIdx(4228);
 	}	
 	
 	/**
@@ -288,11 +288,11 @@ public class Main1 {
 //		Main1.execute_A1();
 //		Main1.execute_A2();
 //		Main1.execute_MAY1();
-//		Main1.execute_MAY3();
-//		Main1.execute_MAY4();
+		Main1.execute_MAY3();
+		Main1.execute_MAY4();
 
 //		execute_inventory1();
-		execute_A2();
+//		execute_A2();
 
 	}
 

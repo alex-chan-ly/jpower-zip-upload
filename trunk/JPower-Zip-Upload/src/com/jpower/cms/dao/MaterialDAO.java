@@ -16,9 +16,9 @@ public class MaterialDAO {
 			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-APPLICATION_DETAIL', "
 			+ "'Material id : ' || sub_series_id || ' being marked deletion', '', current_timestamp, current_timestamp from jpw_application_detail where tran_action = 'DEL' and ref_idx = ?";
 	
-	public static String sql3 = "insert into jpt_material(ref_idx, material_id, ref_no, series, avaliable_size, tile_thickness, color, "
+	public static String sql3 = "insert into jpt_material(ref_idx, material_id, series, name, description_eng, avaliable_size, tile_thickness, color, "
 			+ "finishing, application, remarks_1, rec_status, create_date, update_date, create_user, update_user) " 
-			+ "select ref_idx, sub_series_id, ref_no, series, avaliable_size, tile_thickness, color, finishing, application, "
+			+ "select ref_idx, sub_series_id, series, name, description_eng, avaliable_size, tile_thickness, color, finishing, application, "
 			+ "remarks_1, 'ACT', current_timestamp, current_timestamp, 'john', 'john' from jpw_application_detail where tran_action = 'ADD' and tran_status = 'AWV' and ref_idx = ?";
 	
 	public static String sql4 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) " 
