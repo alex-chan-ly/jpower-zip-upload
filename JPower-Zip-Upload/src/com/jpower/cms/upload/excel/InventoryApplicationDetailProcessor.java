@@ -40,6 +40,8 @@ public class InventoryApplicationDetailProcessor {
 		vo.setTranAction(row[columnIndex++].getContents());
 		vo.setSubSeriesId(row[columnIndex++].getContents());
 		vo.setSeries(row[columnIndex++].getContents());
+		vo.setName(row[columnIndex++].getContents());
+		vo.setDescriptionEng(row[columnIndex++].getContents());
 		vo.setAvailableSize(row[columnIndex++].getContents());
 		vo.setTileThickness(row[columnIndex++].getContents());
 		vo.setColor(row[columnIndex++].getContents());

@@ -4,8 +4,9 @@ import java.sql.Timestamp;
 
 public class InventoryApplicationDetailVO {
 	private String subSeriesId;
-	private String refNo;
+	private String name;
 	private String series;
+	private String descriptionEng;
 	private String availableSize;
 	private String tileThickness;
 	private String color;
@@ -28,11 +29,11 @@ public class InventoryApplicationDetailVO {
 	public void setSubSeriesId(String subSeriesId) {
 		this.subSeriesId = subSeriesId;
 	}
-	public String getRefNo() {
-		return refNo;
+	public String getName() {
+		return name;
 	}
-	public void setRefNo(String refNo) {
-		this.refNo = refNo;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getSeries() {
 		return series;
@@ -136,6 +137,12 @@ public class InventoryApplicationDetailVO {
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
+	public String getDescriptionEng() {
+		return descriptionEng;
+	}
+	public void setDescriptionEng(String description) {
+		this.descriptionEng = description;
+	}
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(getTranAction());
@@ -143,6 +150,10 @@ public class InventoryApplicationDetailVO {
 		sb.append(getSubSeriesId());
 		sb.append("|");
 		sb.append(getSeries());
+		sb.append("|");
+		sb.append(getName());
+		sb.append("|");
+		sb.append(getDescriptionEng());
 		sb.append("|");
 		sb.append(getAvailableSize());
 		sb.append("|");
