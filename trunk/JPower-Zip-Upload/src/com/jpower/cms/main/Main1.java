@@ -239,28 +239,28 @@ public class Main1 {
 		}
 	}		
 	public static void execute_A2() {
-		MaterialDAO.deleteRecByRefIdx(3928);
-		SubSeriesDAO.deleteRecByRefIdx(3928);
-		RltSeriesSubSeriesDAO.deleteRecByRefIdx(3928);
-		SeriesDAO.deleteRecByRefIdx(3928);
-		RltCategorySeriesDAO.deleteRecByRefIdx(3928);
-		CategoryDAO.deleteRecByRefIdx(3928);
-		RltLobCategoryDAO.deleteRecByRefIdx(3928);
-		LobDAO.deleteRecByRefIdx(3928);
+		MaterialDAO.deleteRecByRefIdx(4028);
+		SubSeriesDAO.deleteRecByRefIdx(4028);
+		RltSeriesSubSeriesDAO.deleteRecByRefIdx(4028);
+		SeriesDAO.deleteRecByRefIdx(4028);
+		RltCategorySeriesDAO.deleteRecByRefIdx(4028);
+		CategoryDAO.deleteRecByRefIdx(4028);
+		RltLobCategoryDAO.deleteRecByRefIdx(4028);
+		LobDAO.deleteRecByRefIdx(4028);
 	}
 	
 	public static void execute_A3() {
-		MaterialDAO.addRecByRefIdx(2728);
-		SubSeriesDAO.addRecByRefIdx(2728);
-		SeriesDAO.addRecByRefIdx(2728);
-		RltSeriesSubSeriesDAO.addRecByRefIdx(2728);
+		MaterialDAO.addRecByRefIdx(4028);
+		SubSeriesDAO.addRecByRefIdx(4028);
+		SeriesDAO.addRecByRefIdx(4028);
+		RltSeriesSubSeriesDAO.addRecByRefIdx(4028);
 	}
 	
 	public static void execute_A4() {
-		CategoryDAO.addRecByRefIdx(2728);
-		RltCategorySeriesDAO.addRecByRefIdx(2728);
-		LobDAO.addRecByRefIdx(2728);
-		RltLobCategoryDAO.addRecByRefIdx(2728);
+		CategoryDAO.addRecByRefIdx(4028);
+		RltCategorySeriesDAO.addRecByRefIdx(4028);
+		LobDAO.addRecByRefIdx(4028);
+		RltLobCategoryDAO.addRecByRefIdx(4028);
 	}	
 	public static void execute_MAY3() {
 		MaterialDAO.addRecByRefIdx(4228);
@@ -288,12 +288,16 @@ public class Main1 {
 //		Main1.execute_A1();
 //		Main1.execute_A2();
 //		Main1.execute_MAY1();
-		Main1.execute_MAY3();
-		Main1.execute_MAY4();
+//		Main1.execute_MAY3();
+//		Main1.execute_MAY4();
 
+//     for verify addition and deletion		
 //		execute_inventory1();
 //		execute_A2();
-
+		
+		execute_A3();
+		execute_A4();
+		
 	}
 
 }

@@ -61,6 +61,7 @@ public class LobDAO {
 			try {
 				if (ps != null) {ps.close();}
 				if (ps1 != null) {ps1.close();}
+				if (conn != null) {conn.close();}
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
@@ -102,6 +103,7 @@ public class LobDAO {
 			try {
 				if (ps != null) {ps.close();}
 				if (ps1 != null) {ps1.close();}
+				if (conn != null) {conn.close();}
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}

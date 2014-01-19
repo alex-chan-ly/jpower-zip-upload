@@ -27,6 +27,7 @@ public class DBUtil {
                         try {
                                 if (rs != null) {rs.close();}
                                 if (s != null) {s.close();}
+                                if (conn != null) {conn.close();}
                         } catch(SQLException e) {
                                 e.printStackTrace();
                         }

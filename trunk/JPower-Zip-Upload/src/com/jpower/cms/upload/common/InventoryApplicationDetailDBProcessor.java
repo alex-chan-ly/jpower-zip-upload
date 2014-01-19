@@ -16,8 +16,10 @@ public class InventoryApplicationDetailDBProcessor {
                         "FINISHING, APPLICATION, REMARKS_1, REMARKS_2, REMARKS_3, TRAN_ACTION, TRAN_STATUS, CREATE_USER, UPDATE_USER, " +
                         "CREATE_DATE, UPDATE_DATE, REF_IDX, EXCEL_ROW_ID, EXCEL_ROW_DATA) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,current_timestamp,current_timestamp,?,?,?)";
        
+        public static PreparedStatement psInsert = null;
+        
         public static void saveToDB(List<InventoryApplicationDetailVO> voList) {
-                PreparedStatement psInsert;
+                
                 Connection conn = DBAccess.getDBConnection();
                 try {
                         psInsert = conn.prepareStatement(insertSql);
@@ -50,6 +52,14 @@ public class InventoryApplicationDetailDBProcessor {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                 }
+                finally {
+        			try {
+        				if (psInsert != null) {psInsert.close();}
+        				if (conn != null) {conn.close();}
+        			} catch(SQLException e) {
+        				e.printStackTrace();
+        			}
+        		}		
                
         }
 }
