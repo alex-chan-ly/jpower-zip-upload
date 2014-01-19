@@ -12,7 +12,6 @@ public class DBAccess {
 	
 		private static MiniConnectionPoolManager poolMgr = null;
 		private static String dataBaseName = "db2";
-		private static int dbPoolSize = 10;
        
 //        public static String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 //        public static String dbName="db1";
@@ -24,7 +23,7 @@ public class DBAccess {
         	Connection conn = null;
     		EmbeddedConnectionPoolDataSource dataSource = new EmbeddedConnectionPoolDataSource();
     		dataSource.setDatabaseName(dataBaseName);
-    		poolMgr = new MiniConnectionPoolManager(dataSource, dbPoolSize);
+    		poolMgr = new MiniConnectionPoolManager(dataSource, Util.dbPoolSize);
             
     		try {
 				conn =  poolMgr.getConnection();
