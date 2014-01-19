@@ -21,7 +21,7 @@ public class ApplicationDetailMaterialValidator {
 //	Execute Main1.execute_xxx()
 		
 	public static int checkExistForAdd(int uploadSeq) {
-		Connection conn;
+		Connection conn = null;
 		PreparedStatement ps1 = null;
 		int recCount = 0;
 				
@@ -46,6 +46,7 @@ public class ApplicationDetailMaterialValidator {
 		finally {
 			try {
 				if (ps1 != null) {ps1.close();}
+				if (conn != null) {conn.close();}
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
@@ -54,7 +55,7 @@ public class ApplicationDetailMaterialValidator {
 	}
 
 	public static int checkNotExistForDel(int uploadSeq) {
-		Connection conn;
+		Connection conn = null;
 		PreparedStatement ps1 = null;
 		int recCount = 0;
 				
@@ -79,6 +80,7 @@ public class ApplicationDetailMaterialValidator {
 		finally {
 			try {
 				if (ps1 != null) {ps1.close();}
+				if (conn != null) {conn.close();}
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}

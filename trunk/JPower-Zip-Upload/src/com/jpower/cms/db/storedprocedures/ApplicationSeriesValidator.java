@@ -13,7 +13,7 @@ public class ApplicationSeriesValidator {
 	
 	
 	public static int checkDuplicateSubSeriesSequence(int uploadSeq) {
-		Connection conn;
+		Connection conn = null;
 		int recCount = 0;
 		PreparedStatement ps1 = null;
 				
@@ -39,6 +39,7 @@ public class ApplicationSeriesValidator {
 		finally {
 			try {
 				if (ps1 != null) {ps1.close();}
+				if (conn != null) {conn.close();}
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
@@ -47,7 +48,7 @@ public class ApplicationSeriesValidator {
 	}
 	
 	public static int checkInconsistentSeriesSequence(int uploadSeq) {
-		Connection conn;
+		Connection conn = null;
 		int recCount = 0;
 		PreparedStatement ps1 = null;
 				
@@ -73,6 +74,7 @@ public class ApplicationSeriesValidator {
 		finally {
 			try {
 				if (ps1 != null) {ps1.close();}
+				if (conn != null) {conn.close();}
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
@@ -81,7 +83,7 @@ public class ApplicationSeriesValidator {
 	}
 	
 	public static void checkNotExistForDel(int uploadSeq, int[] recCount) {
-		Connection conn;
+		Connection conn = null;
 		PreparedStatement ps1 = null;
 				
 		StringBuffer sb = new StringBuffer();
@@ -92,7 +94,8 @@ public class ApplicationSeriesValidator {
 		sb.append("and not exists (select * from jpt_sub_series b where b.rec_status = 'ACT' and b.material_id = a.sub_series_id)");
 
 		try {
-			conn = DriverManager.getConnection("jdbc:default:connection");
+//			conn = DriverManager.getConnection("jdbc:default:connection");
+			conn = DBAccess.getDBConnection();
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
 			int cnt = ps1.executeUpdate();
@@ -106,6 +109,7 @@ public class ApplicationSeriesValidator {
 		finally {
 			try {
 				if (ps1 != null) {ps1.close();}
+				if (conn != null) {conn.close();}
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
