@@ -12,7 +12,7 @@ import com.jpower.cms.upload.common.DBAccess;
 public class ApplicationCategoryValidator {
 		
 	public static int checkInconsistentCategorySequence(int uploadSeq) {
-		Connection conn;
+		Connection conn = null;
 		int recCount = 0;
 		PreparedStatement ps1 = null;
 				
@@ -38,6 +38,7 @@ public class ApplicationCategoryValidator {
 		finally {
 			try {
 				if (ps1 != null) {ps1.close();}
+				if (conn != null) {conn.close();}
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}

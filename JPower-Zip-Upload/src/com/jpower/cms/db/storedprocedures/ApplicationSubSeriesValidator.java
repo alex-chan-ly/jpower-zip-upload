@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.jpower.cms.upload.common.DBAccess;
+
 public class ApplicationSubSeriesValidator {
 	
 //	create PROCEDURE CHECK_APPLICATION_UPLOAD_SUB_SERIES(in id int )
@@ -22,7 +24,7 @@ public class ApplicationSubSeriesValidator {
 //	Execute Main1.execute_3()
 		
 	public static void checkExistForAdd(int uploadSeq, int[] recCount) {
-		Connection conn;
+		Connection conn = null;
 		PreparedStatement ps1 = null;
 				
 		StringBuffer sb = new StringBuffer();
@@ -33,7 +35,8 @@ public class ApplicationSubSeriesValidator {
 		sb.append("and exists (select * from jpt_sub_series b where b.rec_status = 'ACT' and b.material_id = a.sub_series_id)");
 
 		try {
-			conn = DriverManager.getConnection("jdbc:default:connection");
+//			conn = DriverManager.getConnection("jdbc:default:connection");
+			conn = DBAccess.getDBConnection();
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
 			int cnt = ps1.executeUpdate();
@@ -47,6 +50,7 @@ public class ApplicationSubSeriesValidator {
 		finally {
 			try {
 				if (ps1 != null) {ps1.close();}
+				if (conn != null) {conn.close();}
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
@@ -66,7 +70,7 @@ public class ApplicationSubSeriesValidator {
 //	Execute Main1.execute_?()	
 	
 	public static void checkNotExistForDel(int uploadSeq, int[] recCount) {
-		Connection conn;
+		Connection conn = null;
 		PreparedStatement ps1 = null;
 				
 		StringBuffer sb = new StringBuffer();
@@ -77,7 +81,8 @@ public class ApplicationSubSeriesValidator {
 		sb.append("and not exists (select * from jpt_sub_series b where b.rec_status = 'ACT' and b.material_id = a.sub_series_id)");
 
 		try {
-			conn = DriverManager.getConnection("jdbc:default:connection");
+//			conn = DriverManager.getConnection("jdbc:default:connection");
+			conn = DBAccess.getDBConnection();
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
 			int cnt = ps1.executeUpdate();
@@ -91,6 +96,7 @@ public class ApplicationSubSeriesValidator {
 		finally {
 			try {
 				if (ps1 != null) {ps1.close();}
+				if (conn != null) {conn.close();}
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
