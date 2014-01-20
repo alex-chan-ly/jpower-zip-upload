@@ -42,12 +42,19 @@ public class InventoryApplicationDetailProcessor {
 		vo.setSeries(row[columnIndex++].getContents());
 		vo.setName(row[columnIndex++].getContents());
 		vo.setDescriptionEng(row[columnIndex++].getContents());
+		vo.setDescriptionChin(row[columnIndex++].getContents());
 		vo.setAvailableSize(row[columnIndex++].getContents());
+		vo.setAvailableSizeChin(row[columnIndex++].getContents());
 		vo.setTileThickness(row[columnIndex++].getContents());
+		vo.setTileThicknessChin(row[columnIndex++].getContents());
 		vo.setColor(row[columnIndex++].getContents());
+		vo.setColorChin(row[columnIndex++].getContents());
 		vo.setFinishing(row[columnIndex++].getContents());
+		vo.setFinishingChin(row[columnIndex++].getContents());
 		vo.setApplication(row[columnIndex++].getContents());
+		vo.setApplicationChin(row[columnIndex++].getContents());
 		vo.setRemarks1(row[columnIndex++].getContents());
+		vo.setRemarks1Chin(row[columnIndex++].getContents());
 		vo.setExcelRowID(rowNum + Util.EXCEL_HEADER_LINE_NUM);
 		vo.setExcelRowData(vo.toString());
 
