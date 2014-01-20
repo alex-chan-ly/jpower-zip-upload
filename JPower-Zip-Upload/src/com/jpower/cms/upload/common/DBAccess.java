@@ -11,8 +11,8 @@ import biz.source_code.miniConnectionPoolManager.MiniConnectionPoolManager;
 public class DBAccess {
 	
 		private static MiniConnectionPoolManager poolMgr = null;
-		private static String dataBaseName = "db2";
-       
+//		private static String dataBaseName = "db2";
+		private static String dataBaseName = "db1";
 //        public static String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 //        public static String dbName="db1";
 //        public static String connectionURL = "jdbc:derby:" + dbName + ";create=true";

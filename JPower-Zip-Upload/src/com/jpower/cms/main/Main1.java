@@ -76,7 +76,8 @@ public class Main1 {
 		List<InventoryApplicationDetailVO> voDetailList = null;
 		int seq, updateSeq;
 		
-		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-walkthrough-20131229.xls");
+//		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-walkthrough-20131229.xls");
+		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-walkthrough-20131229-working.xls");
 		seq = DBUtil.getUploadSequence();
 		MemCache.setUploadSeq(seq);
 		updateSeq = DBUtil.getUploadSequence();
@@ -276,6 +277,10 @@ public class Main1 {
 		RltLobCategoryDAO.addRecByRefIdx(4228);
 	}	
 	
+	public static void execute_100() {
+		MaterialDAO.addRecByRefIdx(4028);
+	}
+	
 	/**
 	 * @param args
 	 */
@@ -295,8 +300,10 @@ public class Main1 {
 //		execute_inventory1();
 //		execute_A2();
 		
-		execute_A3();
-		execute_A4();
+//		execute_A3();
+//		execute_A4();
+//		Main1.execute_1();
+//		execute_100();
 		
 	}
 
