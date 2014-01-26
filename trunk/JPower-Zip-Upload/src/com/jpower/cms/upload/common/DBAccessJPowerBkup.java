@@ -8,16 +8,16 @@ import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 
 import biz.source_code.miniConnectionPoolManager.MiniConnectionPoolManager;
 
-public class DBAccess {
+public class DBAccessJPowerBkup {
 	
 		private static MiniConnectionPoolManager poolMgr = null;
 //		private static String dataBaseName = "db2";
-//		private static String dataBaseName = "db1";
-//		private static String dataBaseName = "/home/alexc/Documents/_jPower/_fromJpowerSite/db_bkup/db1";
+//		private static String dataBaseName = "/home/alexc/Documents/_jPower/_fromJpowerSite/db_bkup/db1/";
 //      public static String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 //      public static String dbName="db1";
 //      public static String connectionURL = "jdbc:derby:" + dbName + ";create=true";
 		private static String dataBaseName = FileHelper.getConfigProperty("db.databaseName");
+
        
         public static Connection conn = null;
        

@@ -18,7 +18,7 @@ public class InventoryApplicationDBProcessor {
 
 	public static PreparedStatement psInsert = null;
 
-	public static void saveToDB(List<InventoryApplicationVO> voList) {
+	public static void saveToDB(List<InventoryApplicationVO> voList, int refIdx) {
 		Connection conn = DBAccess.getDBConnection();
 		try {
 			psInsert = conn.prepareStatement(insertSql);
@@ -48,7 +48,8 @@ public class InventoryApplicationDBProcessor {
 				psInsert.setString(22, Util.TRAN_STATUS_AWV);
 				psInsert.setString(23, Util.USER_ID_DEFAULT);
 				psInsert.setString(24, Util.USER_ID_DEFAULT);
-				psInsert.setInt(25, MemCache.getUploadSeq());
+//				psInsert.setInt(25, MemCache.getUploadSeq());
+				psInsert.setInt(25, refIdx);
 				psInsert.setInt(26, vo.getExcelRowID());
 				psInsert.setString(27, vo.getExcelRowData());
 				psInsert.executeUpdate();

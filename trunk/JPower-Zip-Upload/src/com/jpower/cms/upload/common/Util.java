@@ -8,7 +8,6 @@ public class Util {
         public static String TRAN_ACTION_ADD = "ADD";
         public static String TRAN_STATUS_AWV = "AWV";
         public static int EXCEL_HEADER_LINE_NUM = 1;
-        public static int dbPoolSize = 10;
 
 }
 
