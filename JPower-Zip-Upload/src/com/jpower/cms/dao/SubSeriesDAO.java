@@ -12,10 +12,6 @@ public class SubSeriesDAO {
 	public static String sql1 = "update jpt_sub_series set ref_idx = ?, rec_status = 'DEL', update_date = current_timestamp where rec_status = 'ACT' and material_id in ("
 			+ "select sub_series_id from jpw_application where tran_action = 'DEL' and ref_idx = ?)";
 	
-//	public static String sql2 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
-//			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-APPLICATION', "
-//			+ "'Sub Series ID : ' || sub_series_id || ' being marked deletion', '', current_timestamp, current_timestamp from jpw_application where tran_action = 'DEL' and ref_idx = ?";
-	
 	public static String sql2 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
 			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-SUB_SERIES', "
 			+ "'Sub Series ID : ' || sub_series_id || '; Material_ID : ' || material_id || ' being marked deletion', '', current_timestamp, current_timestamp from jpt_sub_series where rec_status = 'DEL' and ref_idx = ?";	
@@ -46,7 +42,8 @@ public class SubSeriesDAO {
 			
 			if (cnt > 0) {
 				ps1 = conn.prepareStatement(sql2);
-				ps1.setInt(1, MemCache.getChangeLogKey());
+//				ps1.setInt(1, MemCache.getChangeLogKey());
+				ps1.setInt(1, refIdx);
 				ps1.setInt(2, refIdx);
 				ps1.executeUpdate();
 			}

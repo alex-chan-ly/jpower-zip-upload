@@ -17,7 +17,6 @@ public class StoredUtil {
 			} else {
 				fullPath = path + File.separator + fileName;
 			}
-			
 			File f = new File(fullPath);
 			
 			rtnCode = (f.isFile() && f.exists()) ? 0 : -1;

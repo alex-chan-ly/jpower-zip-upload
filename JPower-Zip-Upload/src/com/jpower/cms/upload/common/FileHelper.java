@@ -6,10 +6,11 @@ import java.util.Properties;
 
 public class FileHelper {
         private static String propertiesFileName = "config.properties";
-        private static Properties prop = new Properties();
+        private static Properties prop = null;
        
         public static void loadProperties() {
                 try {
+                		prop = new Properties();
                         InputStream is = FileHelper.class.getClassLoader().getResourceAsStream(propertiesFileName);
                         prop.load(is);
                        
@@ -20,10 +21,15 @@ public class FileHelper {
         }
                
         public static String getConfigProperty(String name) {
-                if (name != null && !name.isEmpty()) {
+        		if (prop == null) {
+        			loadProperties();
+        		}
+        		
+                if (name != null && name.length() > 0) {
                         return prop.getProperty(name);
                 } else {
                         return null;
                 }
         }
-}
+        
+ }

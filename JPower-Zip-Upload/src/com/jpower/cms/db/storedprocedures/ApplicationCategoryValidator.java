@@ -95,7 +95,7 @@ public class ApplicationCategoryValidator {
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
 			ps1.setString(2, prefix);
-			ps1.setString(3, prefix);
+			ps1.setString(3, filePath);
 			recCount = ps1.executeUpdate();
 			
 		} catch (SQLException e) {

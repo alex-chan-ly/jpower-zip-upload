@@ -19,11 +19,13 @@ import com.jpower.cms.dao.RltLobCategoryDAO;
 import com.jpower.cms.dao.RltSeriesSubSeriesDAO;
 import com.jpower.cms.dao.SeriesDAO;
 import com.jpower.cms.dao.SubSeriesDAO;
+import com.jpower.cms.db.storedprocedures.ApplicationSubSeriesValidator;
 import com.jpower.cms.upload.common.DBAccess;
 import com.jpower.cms.upload.common.DBUtil;
 import com.jpower.cms.upload.common.InventoryApplicationDBProcessor;
 import com.jpower.cms.upload.common.InventoryApplicationDetailDBProcessor;
 import com.jpower.cms.upload.common.MemCache;
+import com.jpower.cms.upload.common.StagingUtil;
 import com.jpower.cms.upload.common.Util;
 import com.jpower.cms.upload.excel.InventoryApplicationDetailProcessor;
 import com.jpower.cms.upload.excel.InventoryApplicationProcessor;
@@ -31,6 +33,16 @@ import com.jpower.cms.vo.InventoryApplicationDetailVO;
 import com.jpower.cms.vo.InventoryApplicationVO;
 
 public class Main1 {
+	
+	public static void execute_stagUtil_A1() {
+		StagingUtil.purgeStagingArea();
+	}
+	
+	public static void execute_jPowerBkup_A1() {
+		int recCont = ApplicationSubSeriesValidator.checkSubSeriesImageLargeExists(3428, 
+				"/home/alexc/workspace_ee/JPower-Zip-Upload/public_html", "staging");
+		System.out.println("execute_jPowerBkup_A1 : " + recCont);
+	}
 	
 	public static void execute_4() {
 		MaterialDAO.deleteRecByRefIdx(1328);
@@ -74,17 +86,19 @@ public class Main1 {
 	public static void execute_1() {
 		List<InventoryApplicationVO> voList = null;
 		List<InventoryApplicationDetailVO> voDetailList = null;
-		int seq, updateSeq;
+		int seq;
+//		int updateSeq;
 		
 //		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-walkthrough-20131229.xls");
-		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-walkthrough-20131229-working.xls");
+//		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-walkthrough-20131229-working.xls");
+		File f = new File("/home/alexc/Documents/_jPower/_inventory/website 26012014/jpower-phase-2-19012014-Amend.xls");
 		seq = DBUtil.getUploadSequence();
-		MemCache.setUploadSeq(seq);
-		updateSeq = DBUtil.getUploadSequence();
-		MemCache.setChangeLogKey(updateSeq);
+//		MemCache.setUploadSeq(seq);
+//		updateSeq = DBUtil.getUploadSequence();
+//		MemCache.setChangeLogKey(updateSeq);
 		
 		System.out.println("Seq : " + seq);
-		System.out.println("ChangeLogKey : " + updateSeq);
+//		System.out.println("ChangeLogKey : " + updateSeq);
 		
 		try {
 			Workbook wkb = Workbook.getWorkbook(f);
@@ -94,13 +108,13 @@ public class Main1 {
 				if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION)) {
 					voList = InventoryApplicationProcessor.processApplicationSheet(s);
 					if (!voList.isEmpty()) {
-						InventoryApplicationDBProcessor.saveToDB(voList);
+						InventoryApplicationDBProcessor.saveToDB(voList, seq);
 					}
 					
 				} else if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION_DETAIL)) {
 					voDetailList = InventoryApplicationDetailProcessor.processApplicationSheet(s);
 					if (!voDetailList.isEmpty()) {
-						InventoryApplicationDetailDBProcessor.saveToDB(voDetailList);
+						InventoryApplicationDetailDBProcessor.saveToDB(voDetailList, seq);
 					}
 				}
 			}
@@ -117,16 +131,17 @@ public class Main1 {
 	public static void execute_A1() {
 		List<InventoryApplicationVO> voList = null;
 		List<InventoryApplicationDetailVO> voDetailList = null;
-		int seq, updateSeq;
+		int seq;
+//		int updateSeq;
 		
 		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-walkthrough-20131229.xls");
 		seq = DBUtil.getUploadSequence();
-		MemCache.setUploadSeq(seq);
-		updateSeq = DBUtil.getUploadSequence();
-		MemCache.setChangeLogKey(updateSeq);
+//		MemCache.setUploadSeq(seq);
+//		updateSeq = DBUtil.getUploadSequence();
+//		MemCache.setChangeLogKey(updateSeq);
 		
 		System.out.println("Seq : " + seq);
-		System.out.println("ChangeLogKey : " + updateSeq);
+//		System.out.println("ChangeLogKey : " + updateSeq);
 		
 		try {
 			Workbook wkb = Workbook.getWorkbook(f);
@@ -136,13 +151,13 @@ public class Main1 {
 				if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION)) {
 					voList = InventoryApplicationProcessor.processApplicationSheet(s);
 					if (!voList.isEmpty()) {
-						InventoryApplicationDBProcessor.saveToDB(voList);
+						InventoryApplicationDBProcessor.saveToDB(voList, seq);
 					}
 					
 				} else if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION_DETAIL)) {
 					voDetailList = InventoryApplicationDetailProcessor.processApplicationSheet(s);
 					if (!voDetailList.isEmpty()) {
-						InventoryApplicationDetailDBProcessor.saveToDB(voDetailList);
+						InventoryApplicationDetailDBProcessor.saveToDB(voDetailList, seq);
 					}
 				}
 			}
@@ -159,16 +174,17 @@ public class Main1 {
 	public static void execute_MAY1() {
 		List<InventoryApplicationVO> voList = null;
 		List<InventoryApplicationDetailVO> voDetailList = null;
-		int seq, updateSeq;
+		int seq;
+//		int updateSeq;
 		
 		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-14012014-May-Amend-20140118.xls");
 		seq = DBUtil.getUploadSequence();
-		MemCache.setUploadSeq(seq);
-		updateSeq = DBUtil.getUploadSequence();
-		MemCache.setChangeLogKey(updateSeq);
+//		MemCache.setUploadSeq(seq);
+//		updateSeq = DBUtil.getUploadSequence();
+//		MemCache.setChangeLogKey(updateSeq);
 		
 		System.out.println("Seq : " + seq);
-		System.out.println("ChangeLogKey : " + updateSeq);
+//		System.out.println("ChangeLogKey : " + updateSeq);
 		
 		try {
 			Workbook wkb = Workbook.getWorkbook(f);
@@ -178,13 +194,13 @@ public class Main1 {
 				if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION)) {
 					voList = InventoryApplicationProcessor.processApplicationSheet(s);
 					if (!voList.isEmpty()) {
-						InventoryApplicationDBProcessor.saveToDB(voList);
+						InventoryApplicationDBProcessor.saveToDB(voList, seq);
 					}
 					
 				} else if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION_DETAIL)) {
 					voDetailList = InventoryApplicationDetailProcessor.processApplicationSheet(s);
 					if (!voDetailList.isEmpty()) {
-						InventoryApplicationDetailDBProcessor.saveToDB(voDetailList);
+						InventoryApplicationDetailDBProcessor.saveToDB(voDetailList, seq);
 					}
 				}
 			}
@@ -201,16 +217,17 @@ public class Main1 {
 	public static void execute_inventory1() {
 		List<InventoryApplicationVO> voList = null;
 		List<InventoryApplicationDetailVO> voDetailList = null;
-		int seq, updateSeq;
+		int seq;
+//		int updateSeq;
 		
 		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-inventory-1.xls");
 		seq = DBUtil.getUploadSequence();
-		MemCache.setUploadSeq(seq);
-		updateSeq = DBUtil.getUploadSequence();
-		MemCache.setChangeLogKey(updateSeq);
+//		MemCache.setUploadSeq(seq);
+//		updateSeq = DBUtil.getUploadSequence();
+//		MemCache.setChangeLogKey(updateSeq);
 		
 		System.out.println("Seq : " + seq);
-		System.out.println("ChangeLogKey : " + updateSeq);
+//		System.out.println("ChangeLogKey : " + updateSeq);
 		
 		try {
 			Workbook wkb = Workbook.getWorkbook(f);
@@ -220,13 +237,13 @@ public class Main1 {
 				if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION)) {
 					voList = InventoryApplicationProcessor.processApplicationSheet(s);
 					if (!voList.isEmpty()) {
-						InventoryApplicationDBProcessor.saveToDB(voList);
+						InventoryApplicationDBProcessor.saveToDB(voList, seq);
 					}
 					
 				} else if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION_DETAIL)) {
 					voDetailList = InventoryApplicationDetailProcessor.processApplicationSheet(s);
 					if (!voDetailList.isEmpty()) {
-						InventoryApplicationDetailDBProcessor.saveToDB(voDetailList);
+						InventoryApplicationDetailDBProcessor.saveToDB(voDetailList, seq);
 					}
 				}
 			}
@@ -251,17 +268,17 @@ public class Main1 {
 	}
 	
 	public static void execute_A3() {
-		MaterialDAO.addRecByRefIdx(4028);
-		SubSeriesDAO.addRecByRefIdx(4028);
-		SeriesDAO.addRecByRefIdx(4028);
-		RltSeriesSubSeriesDAO.addRecByRefIdx(4028);
+		MaterialDAO.addRecByRefIdx(3528);
+		SubSeriesDAO.addRecByRefIdx(3528);
+		SeriesDAO.addRecByRefIdx(3528);
+		RltSeriesSubSeriesDAO.addRecByRefIdx(3528);
 	}
 	
 	public static void execute_A4() {
-		CategoryDAO.addRecByRefIdx(4028);
-		RltCategorySeriesDAO.addRecByRefIdx(4028);
-		LobDAO.addRecByRefIdx(4028);
-		RltLobCategoryDAO.addRecByRefIdx(4028);
+		CategoryDAO.addRecByRefIdx(3528);
+		RltCategorySeriesDAO.addRecByRefIdx(3528);
+		LobDAO.addRecByRefIdx(3528);
+		RltLobCategoryDAO.addRecByRefIdx(3528);
 	}	
 	public static void execute_MAY3() {
 		MaterialDAO.addRecByRefIdx(4228);
@@ -300,11 +317,13 @@ public class Main1 {
 //		execute_inventory1();
 //		execute_A2();
 		
-//		execute_A3();
-//		execute_A4();
+		execute_A3();
+		execute_A4();
 //		Main1.execute_1();
 //		execute_100();
 		
+//		execute_jPowerBkup_A1();
+//		execute_stagUtil_A1();
 	}
 
 }

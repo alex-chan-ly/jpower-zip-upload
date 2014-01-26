@@ -22,7 +22,7 @@ public class ApplicationSeriesValidator {
 		sb.append("select distinct TRIM(CAST(CAST(a.ref_idx AS CHAR(10))AS VARCHAR(10))), 'Error', 'UPLOAD-APPLICATION', ");
 		sb.append("'Validation error (Series has duplicate Sub Series Sequence)', 'Series : ' || a.series ");
 		sb.append(", current_timestamp,current_timestamp from jpw_application a where a.ref_idx = ? and exists (");
-		sb.append("select count(*) from jpw_application b where b.ref_idx = ? and b.series = a.series");
+		sb.append("select count(*) from jpw_application b where b.ref_idx = ? and b.series = a.series ");
 		sb.append("group by b.series, b.sub_series_seq having count(*) > 1)");
 
 		try {
@@ -82,9 +82,10 @@ public class ApplicationSeriesValidator {
 		return recCount;
 	}
 	
-	public static void checkNotExistForDel(int uploadSeq, int[] recCount) {
+	public static int checkNotExistForDel(int uploadSeq) {
 		Connection conn = null;
 		PreparedStatement ps1 = null;
+		int recCount = 0;
 				
 		StringBuffer sb = new StringBuffer();
 		sb.append("insert into jpt_log(ref_no, severity, category, log_message, remarks_1, create_date, update_date) ");
@@ -98,12 +99,10 @@ public class ApplicationSeriesValidator {
 			conn = DBAccess.getDBConnection();
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
-			int cnt = ps1.executeUpdate();
+			recCount = ps1.executeUpdate();
 			
-			recCount[0] = cnt;
-		
+	
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {
@@ -113,7 +112,8 @@ public class ApplicationSeriesValidator {
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
-		}		
+		}
+		return recCount;		
 	}	
 	
 	public static int checkSeriesImageSmallNameWithSpaceChar(int uploadSeq) {
@@ -197,7 +197,7 @@ public class ApplicationSeriesValidator {
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
 			ps1.setString(2, prefix);
-			ps1.setString(3, prefix);
+			ps1.setString(3, filePath);
 			recCount = ps1.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -232,7 +232,7 @@ public class ApplicationSeriesValidator {
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
 			ps1.setString(2, prefix);
-			ps1.setString(3, prefix);
+			ps1.setString(3, filePath);
 			recCount = ps1.executeUpdate();
 			
 		} catch (SQLException e) {

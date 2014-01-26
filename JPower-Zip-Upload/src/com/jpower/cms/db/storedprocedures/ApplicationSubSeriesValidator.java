@@ -23,9 +23,10 @@ public class ApplicationSubSeriesValidator {
 
 //	Execute Main1.execute_3()
 		
-	public static void checkExistForAdd(int uploadSeq, int[] recCount) {
+	public static int checkExistForAdd(int uploadSeq) {
 		Connection conn = null;
 		PreparedStatement ps1 = null;
+		int recCount = 0;
 				
 		StringBuffer sb = new StringBuffer();
 		sb.append("insert into jpt_log(ref_no, severity, category, log_message, remarks_1, create_date, update_date) ");
@@ -39,12 +40,9 @@ public class ApplicationSubSeriesValidator {
 			conn = DBAccess.getDBConnection();
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
-			int cnt = ps1.executeUpdate();
-			
-			recCount[0] = cnt;
-		
+			recCount = ps1.executeUpdate();
+	
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {
@@ -54,7 +52,8 @@ public class ApplicationSubSeriesValidator {
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
-		}		
+		}
+		return recCount;		
 	}
 	
 //	create PROCEDURE CHECK_APPLICATION_UPLOAD_SUB_SERIES_FOR_DEL(in id int )
@@ -69,9 +68,10 @@ public class ApplicationSubSeriesValidator {
 
 //	Execute Main1.execute_?()	
 	
-	public static void checkNotExistForDel(int uploadSeq, int[] recCount) {
+	public static int checkNotExistForDel(int uploadSeq) {
 		Connection conn = null;
 		PreparedStatement ps1 = null;
+		int rtnCount = 0;
 				
 		StringBuffer sb = new StringBuffer();
 		sb.append("insert into jpt_log(ref_no, severity, category, log_message, remarks_1, create_date, update_date) ");
@@ -85,12 +85,9 @@ public class ApplicationSubSeriesValidator {
 			conn = DBAccess.getDBConnection();
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
-			int cnt = ps1.executeUpdate();
-			
-			recCount[0] = cnt;
+			rtnCount = ps1.executeUpdate();
 		
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {
@@ -100,7 +97,8 @@ public class ApplicationSubSeriesValidator {
 			} catch(SQLException e) {
 				e.printStackTrace();
 			}
-		}		
+		}
+		return rtnCount;		
 	}	
 	
 	public static int checkSubSeriesImageSmallNameWithSpaceChar(int uploadSeq) {
@@ -184,7 +182,7 @@ public class ApplicationSubSeriesValidator {
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
 			ps1.setString(2, prefix);
-			ps1.setString(3, prefix);
+			ps1.setString(3, filePath);
 			recCount = ps1.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -219,7 +217,7 @@ public class ApplicationSubSeriesValidator {
 			ps1 = conn.prepareStatement(sb.toString());
 			ps1.setInt(1, uploadSeq);
 			ps1.setString(2, prefix);
-			ps1.setString(3, prefix);
+			ps1.setString(3, filePath);
 			recCount = ps1.executeUpdate();
 			
 		} catch (SQLException e) {

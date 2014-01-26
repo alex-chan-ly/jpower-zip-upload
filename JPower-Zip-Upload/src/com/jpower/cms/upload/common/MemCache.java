@@ -13,11 +13,11 @@ public class MemCache {
                 MemCache.uploadSeq = uploadSeq;
         }
 
-        public static int getChangeLogKey() {
-                return changeLogKey;
-        }
-
-        public static void setChangeLogKey(int changeLogKey) {
-                MemCache.changeLogKey = changeLogKey;
-        }
+//        public static int getChangeLogKey() {
+//                return changeLogKey;
+//        }
+//
+//        public static void setChangeLogKey(int changeLogKey) {
+//                MemCache.changeLogKey = changeLogKey;
+//        }
 }
