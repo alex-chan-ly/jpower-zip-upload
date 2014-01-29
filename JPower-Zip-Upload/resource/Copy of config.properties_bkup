@@ -1,0 +1,6 @@
+app.home=/home/alexc/workspace_ee/JPower-Zip-Upload/public_html
+content.home=/home/alexc/workspace_ee/JPower-Zip-Upload/public_html/content
+staging.home=/home/alexc/workspace_ee/JPower-Zip-Upload/public_html/content
+staging.directory=staging
+db.databaseName=/home/alexc/Documents/_jPower/_fromJpowerSite/db_bkup/db1
+db.poolSize=10
