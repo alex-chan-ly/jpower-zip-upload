@@ -317,8 +317,10 @@ public class Main1 {
 //		execute_inventory1();
 //		execute_A2();
 		
-		execute_A3();
-		execute_A4();
+//		execute_A3();
+//		execute_A4();
+		CategoryDAO.purgeImageFileByRefIdx(3428);
+		
 //		Main1.execute_1();
 //		execute_100();
 		
