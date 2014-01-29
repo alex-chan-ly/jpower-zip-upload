@@ -4,23 +4,49 @@ import java.io.File;
 import java.io.IOException;
 
 public class StagingUtil {
+	
+	private static String stagingHome = FileHelper.getConfigProperty("staging.home");
+	private static String stagingDir = FileHelper.getConfigProperty("staging.directory");
 
 	public static void purgeStagingArea() {
+		String fullPathFileName = null;
 		
-	String stagingHome = FileHelper.getConfigProperty("staging.home");
-	String stagingDir = FileHelper.getConfigProperty("staging.directory");
-		
-	try {
-		if (stagingHome != null && stagingDir != null) {
-			stagingDir = stagingHome + File.separator + stagingDir + File.separator + "*";
-			String[] cmd = {"/bin/sh", "-c", "rm -fr " + stagingDir};
-			Runtime.getRuntime().exec(cmd);
+		try {
+			if (stagingHome != null && stagingDir != null) {
+				fullPathFileName = stagingHome + File.separator + stagingDir
+						+ File.separator + "*";
+				String[] cmd = { "/bin/sh", "-c", "rm -fr " + fullPathFileName };
+				Runtime.getRuntime().exec(cmd);
 
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
 	}
+	
+	public static int unZipInventoryFile(String zipfileName) {
+		int rtnCode = 0;
+		String fullPathFileName = null;
 		
+		if (stagingHome != null && stagingDir != null) {
+			fullPathFileName = stagingHome + File.separator + stagingDir
+					+ File.separator + zipfileName;
+			System.out.println(fullPathFileName);
+			
+			File f = new File(fullPathFileName);
+			if (f.isFile() && f.exists() && f.canRead()) {
+				String[] cmd = { "/bin/sh", "-c", "unzip -j " + fullPathFileName +  " -d " + stagingHome + File.separator + stagingDir};
+			
+				try {
+					Runtime.getRuntime().exec(cmd);
+				} catch (IOException e) {
+					e.printStackTrace();
+					rtnCode = -1;
+				}
+			}
+		}
+	
+		return rtnCode;
 	}
 }

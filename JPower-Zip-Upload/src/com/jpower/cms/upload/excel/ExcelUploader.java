@@ -25,6 +25,7 @@ import com.jpower.cms.upload.common.FileHelper;
 import com.jpower.cms.upload.common.InventoryApplicationDBProcessor;
 import com.jpower.cms.upload.common.InventoryApplicationDetailDBProcessor;
 import com.jpower.cms.upload.common.MemCache;
+import com.jpower.cms.upload.common.StagingUtil;
 import com.jpower.cms.upload.common.Util;
 import com.jpower.cms.vo.InventoryApplicationDetailVO;
 import com.jpower.cms.vo.InventoryApplicationVO;
@@ -34,9 +35,10 @@ public class ExcelUploader {
 	private static String stagingHome = FileHelper.getConfigProperty("staging.home");
 	private static String stagingDir = FileHelper.getConfigProperty("staging.directory");
 
-	public static int preUpload() {
-		// TODO Auto-generated method stub
-		return 0;
+	public static int preUpload(String zipFile) {
+		int rtnCode = 0;
+		rtnCode = StagingUtil.unZipInventoryFile(zipFile);
+		return rtnCode;
 	}
 
 	public static int upload(String fileName) {
@@ -151,7 +153,7 @@ public class ExcelUploader {
 		int rtnCount = 0;
 		int[] recCount = new int[2];
 		
-		if (preUpload() == 0) {
+		if (preUpload("abc") == 0) {
 			refIdx = upload(fileName);
 			if (refIdx != -1) {
 				rtnCount = postUpload(refIdx);
@@ -192,10 +194,10 @@ public class ExcelUploader {
 //		if (preUpload() == 0) {
 //			refIdx = upload(fileName);
 //			if (refIdx != -1) {
-				rtnCount = postUpload(3928);
+				rtnCount = postUpload(4328);
 				System.out.println("postUpload count : " + rtnCount);
 				if (rtnCount == 0) {
-					recCount = convertToMasterData(3928);
+					recCount = convertToMasterData(4328);
 				}
 //			}
 //		}
@@ -210,7 +212,9 @@ public class ExcelUploader {
 		
 		String fullPath = stagingHome + File.separator + stagingDir + File.separator + fileName; 
 		
+		preUpload("website_26012014.zip");
+		
 //		int cnt = execute_A1(fullPath);
-		int cnt = execute_A2();
+//		int cnt = execute_A2();
 	}
 }
