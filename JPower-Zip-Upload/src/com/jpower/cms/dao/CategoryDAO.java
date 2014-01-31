@@ -9,6 +9,8 @@ import com.jpower.cms.upload.common.FileHelper;
 import com.jpower.cms.upload.common.MemCache;
 
 public class CategoryDAO {
+
+	private static String storageHome = FileHelper.getConfigProperty("storage.home");
 	
 	public static String sql1 = "insert into jpt_category (ref_idx, category_id, category_label_eng, category_label_chin, category_image, rec_status, create_date, "
 			+ "update_date, create_user, update_user) "
@@ -32,8 +34,8 @@ public class CategoryDAO {
 			+ "current_timestamp, current_timestamp from jpt_category where rec_status = 'DEL' and ref_idx = ?";
 
 	public static String sql5 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
-			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-CATEGORY-IMAGE-FILE', "
-			+ "purge_file(?, (case when upper(lob.sub_lob_id) = 'COMMERCIAL' then 'commercial/1' else (case when upper(lob.sub_lob_id) = 'RESIDENTIAL' then '/residential/1/' end) end), "
+			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-CATEGORY_IMAGE_FILE', "
+			+ "purge_file(?, (case when upper(lob.sub_lob_id) = 'COMMERCIAL' then 'commercial/1' else (case when upper(lob.sub_lob_id) = 'RESIDENTIAL' then 'residential/1' end) end), "
 			+ "cat.category_image), 'Image file being purged', " 
 			+ "current_timestamp, current_timestamp from jpt_category cat, jpt_rlt_lob_category lob_cat, jpt_lob lob where cat.rec_status = 'DEL' and cat.ref_idx = ? "
 			+ "and cat.category_pk = lob_cat.category_pk and lob_cat.lob_pk = lob.lob_pk";
@@ -123,8 +125,6 @@ public class CategoryDAO {
 		int cnt = 0;
 		Connection conn = null;
 		PreparedStatement ps = null;
-		
-		String storageHome = FileHelper.getConfigProperty("storage.home");
 		
 		conn = DBAccess.getDBConnection();
 		try {
