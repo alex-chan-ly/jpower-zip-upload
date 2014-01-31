@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import com.jpower.cms.upload.common.DBAccess;
+import com.jpower.cms.upload.common.FileHelper;
 import com.jpower.cms.upload.common.MemCache;
 
 public class SubSeriesDAO {
+
+	private static String storageHome = FileHelper.getConfigProperty("storage.home");
 	
 	public static String sql1 = "update jpt_sub_series set ref_idx = ?, rec_status = 'DEL', update_date = current_timestamp where rec_status = 'ACT' and material_id in ("
 			+ "select sub_series_id from jpw_application where tran_action = 'DEL' and ref_idx = ?)";
@@ -26,6 +29,26 @@ public class SubSeriesDAO {
 			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'ADDITION-SUB_SERIES', "
 			+ "'Sub Series / Sub Series ID : ' || sub_series || ' / ' || sub_series_id || ' being added', '', "
 			+ "current_timestamp, current_timestamp from jpw_application where tran_action = 'ADD' and tran_status = 'AWV' and ref_idx = ?";
+	
+	public static String sql5 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
+			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-SUB_SERIES_SMALL_IMAGE_FILE', "
+			+ "purge_file(?, (case when upper(lob.sub_lob_id) = 'COMMERCIAL' then 'commercial/3' else (case when upper(lob.sub_lob_id) = 'RESIDENTIAL' then 'residential/3' end) end), "
+			+ "sub_ser.sub_series_image_small), 'Image file being purged', " 
+			+ "current_timestamp, current_timestamp from jpt_sub_series sub_ser, jpt_rlt_series_sub_series rlt_ser_sub_ser, jpt_series ser, "
+			+ "jpt_rlt_category_series cat_ser, jpt_category cat, jpt_rlt_lob_category lob_cat, jpt_lob lob "
+			+ "where sub_ser.rec_status = 'DEL' and sub_ser.ref_idx = ? and sub_ser.sub_series_pk = rlt_ser_sub_ser.sub_series_pk "
+			+ "and rlt_ser_sub_ser.series_pk = ser.series_pk and ser.series_pk = cat_ser.series_pk and "
+			+ "cat_ser.category_pk = cat.category_pk and cat.category_pk = lob_cat.category_pk and lob_cat.lob_pk = lob.lob_pk";	
+	
+	public static String sql6 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
+			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-SUB_SERIES_LARGE_IMAGE_FILE', "
+			+ "purge_file(?, (case when upper(lob.sub_lob_id) = 'COMMERCIAL' then 'commercial/3' else (case when upper(lob.sub_lob_id) = 'RESIDENTIAL' then 'residential/3' end) end), "
+			+ "sub_ser.sub_series_image_large), 'Image file being purged', " 
+			+ "current_timestamp, current_timestamp from jpt_sub_series sub_ser, jpt_rlt_series_sub_series rlt_ser_sub_ser, jpt_series ser, "
+			+ "jpt_rlt_category_series cat_ser, jpt_category cat, jpt_rlt_lob_category lob_cat, jpt_lob lob "
+			+ "where sub_ser.rec_status = 'DEL' and sub_ser.ref_idx = ? and sub_ser.sub_series_pk = rlt_ser_sub_ser.sub_series_pk "
+			+ "and rlt_ser_sub_ser.series_pk = ser.series_pk and ser.series_pk = cat_ser.series_pk and "
+			+ "cat_ser.category_pk = cat.category_pk and cat.category_pk = lob_cat.category_pk and lob_cat.lob_pk = lob.lob_pk";
 	
 	public static int deleteRecByRefIdx(int refIdx) {
 		int cnt = 0;
@@ -101,4 +124,62 @@ public class SubSeriesDAO {
 		
 		return cnt;
 	}	
+	
+	public static int purgeImageSmallFileByRefIdx(int refIdx) {
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+	
+		conn = DBAccess.getDBConnection();
+		try {
+			ps = conn.prepareStatement(sql5);
+			ps.setInt(1, refIdx);
+			ps.setString(2, storageHome);
+			ps.setInt(3, refIdx);
+			cnt = ps.executeUpdate();
+	
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if (ps != null) {ps.close();}
+				if (conn != null) {conn.close();}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return cnt;
+	}
+
+	public static int purgeImageLargeFileByRefIdx(int refIdx) {
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+	
+		conn = DBAccess.getDBConnection();
+		try {
+			ps = conn.prepareStatement(sql6);
+			ps.setInt(1, refIdx);
+			ps.setString(2, storageHome);
+			ps.setInt(3, refIdx);
+			cnt = ps.executeUpdate();
+	
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if (ps != null) {ps.close();}
+				if (conn != null) {conn.close();}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return cnt;
+	}			
 }

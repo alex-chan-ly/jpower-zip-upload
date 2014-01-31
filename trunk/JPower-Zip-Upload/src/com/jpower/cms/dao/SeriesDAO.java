@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import com.jpower.cms.upload.common.DBAccess;
+import com.jpower.cms.upload.common.FileHelper;
 import com.jpower.cms.upload.common.MemCache;
 
 public class SeriesDAO {
+
+	private static String storageHome = FileHelper.getConfigProperty("storage.home");
 	
 	public static String sql1 = "insert into jpt_series (ref_idx, series_id, series_label_eng, series_label_chin, series_image_small, series_image_large, "
 			+ "rec_status, create_date, update_date, create_user, update_user) "
@@ -29,6 +32,22 @@ public class SeriesDAO {
 			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-SERIES', " 
 			+ "'Series_pk : ' || TRIM(CAST(CAST(series_pk AS CHAR(10))AS VARCHAR(10))) || '; Series ID : ' || series_id  || ' being deleted', '', "
 			+ "current_timestamp, current_timestamp from jpt_series where rec_status = 'DEL' and ref_idx = ?";
+
+	public static String sql5 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
+			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-SERIES_SMALL_IMAGE_FILE', "
+			+ "purge_file(?, (case when upper(lob.sub_lob_id) = 'COMMERCIAL' then 'commercial/2' else (case when upper(lob.sub_lob_id) = 'RESIDENTIAL' then 'residential/2' end) end), "
+			+ "ser.series_image_small), 'Image file being purged', " 
+			+ "current_timestamp, current_timestamp from jpt_series ser, jpt_rlt_category_series cat_ser, jpt_category cat, jpt_rlt_lob_category lob_cat, jpt_lob lob "
+			+ "where ser.rec_status = 'DEL' and ser.ref_idx = ? and ser.series_pk = cat_ser.series_pk and "
+			+ "cat_ser.category_pk = cat.category_pk and cat.category_pk = lob_cat.category_pk and lob_cat.lob_pk = lob.lob_pk";
+	
+	public static String sql6 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
+			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'DELETION-SERIES_LARGE_IMAGE_FILE', "
+			+ "purge_file(?, (case when upper(lob.sub_lob_id) = 'COMMERCIAL' then 'commercial/3' else (case when upper(lob.sub_lob_id) = 'RESIDENTIAL' then 'residential/3' end) end), "
+			+ "ser.series_image_large), 'Image file being purged', " 
+			+ "current_timestamp, current_timestamp from jpt_series ser, jpt_rlt_category_series cat_ser, jpt_category cat, jpt_rlt_lob_category lob_cat, jpt_lob lob "
+			+ "where ser.rec_status = 'DEL' and ser.ref_idx = ? and ser.series_pk = cat_ser.series_pk and "
+			+ "cat_ser.category_pk = cat.category_pk and cat.category_pk = lob_cat.category_pk and lob_cat.lob_pk = lob.lob_pk";	
 
 	
 
@@ -108,4 +127,62 @@ public class SeriesDAO {
 		
 		return cnt;
 	}	
+	
+	public static int purgeImageSmallFileByRefIdx(int refIdx) {
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+	
+		conn = DBAccess.getDBConnection();
+		try {
+			ps = conn.prepareStatement(sql5);
+			ps.setInt(1, refIdx);
+			ps.setString(2, storageHome);
+			ps.setInt(3, refIdx);
+			cnt = ps.executeUpdate();
+	
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if (ps != null) {ps.close();}
+				if (conn != null) {conn.close();}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return cnt;
+	}
+
+	public static int purgeImageLargeFileByRefIdx(int refIdx) {
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+	
+		conn = DBAccess.getDBConnection();
+		try {
+			ps = conn.prepareStatement(sql6);
+			ps.setInt(1, refIdx);
+			ps.setString(2, storageHome);
+			ps.setInt(3, refIdx);
+			cnt = ps.executeUpdate();
+	
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if (ps != null) {ps.close();}
+				if (conn != null) {conn.close();}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		return cnt;
+	}		
 }

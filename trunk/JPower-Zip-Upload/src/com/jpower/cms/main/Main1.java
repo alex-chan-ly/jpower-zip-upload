@@ -319,7 +319,11 @@ public class Main1 {
 		
 //		execute_A3();
 //		execute_A4();
-		CategoryDAO.purgeImageFileByRefIdx(3428);
+//		CategoryDAO.purgeImageFileByRefIdx(3428);
+		SeriesDAO.purgeImageSmallFileByRefIdx(3428);
+		SeriesDAO.purgeImageLargeFileByRefIdx(3428);
+//		SubSeriesDAO.purgeImageLargeFileByRefIdx(3428);
+//		SubSeriesDAO.purgeImageSmallFileByRefIdx(3428);
 		
 //		Main1.execute_1();
 //		execute_100();
