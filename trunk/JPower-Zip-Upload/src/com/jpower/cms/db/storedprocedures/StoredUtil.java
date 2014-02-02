@@ -59,11 +59,28 @@ public class StoredUtil {
 		return rtnStr;
 	}
 
-	public static int copyFile(String srFile, String dtFile) {
-		int rtnCode = 0;
+	public static String copyFile(String pathPrefix, String srcPath, String srFile, String dstPath, String dtFile) {
+		String rtnStr = null;
+		String srFullFilePath = null;
+		String dtFullFilePath = null;
+		String localPathPrefix = null;
 		
-		File f1 = new File(srFile);
-		File f2 = new File(dtFile);
+		if (pathPrefix != null && pathPrefix.length() > 0) {
+			localPathPrefix = pathPrefix + File.separator;
+		} else {
+			localPathPrefix = File.separator;
+		}
+		
+		if (srcPath != null && srcPath.length() > 0) {
+			srFullFilePath = localPathPrefix + srcPath + File.separator + srFile; 
+		}
+		
+		if (dstPath != null && dstPath.length() > 0) {	
+			dtFullFilePath = localPathPrefix + dstPath + File.separator + dtFile; 
+		}
+	
+		File f1 = new File(srFullFilePath);
+		File f2 = new File(dtFullFilePath);
 
 		try {
 			InputStream in = new FileInputStream(f1);
@@ -77,16 +94,17 @@ public class StoredUtil {
 				}
 				in.close();
 				out.close();
+				rtnStr = dtFullFilePath;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				rtnCode = -1;
+				rtnStr = "";
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			rtnCode = -1;
+			rtnStr = "";
 		}
-		return rtnCode;
+		return rtnStr;
 	}
 }
