@@ -20,6 +20,7 @@ import com.jpower.cms.dao.RltSeriesSubSeriesDAO;
 import com.jpower.cms.dao.SeriesDAO;
 import com.jpower.cms.dao.SubSeriesDAO;
 import com.jpower.cms.db.storedprocedures.ApplicationSubSeriesValidator;
+import com.jpower.cms.db.storedprocedures.StoredUtil;
 import com.jpower.cms.upload.common.DBAccess;
 import com.jpower.cms.upload.common.DBUtil;
 import com.jpower.cms.upload.common.InventoryApplicationDBProcessor;
@@ -320,8 +321,8 @@ public class Main1 {
 //		execute_A3();
 //		execute_A4();
 //		CategoryDAO.purgeImageFileByRefIdx(3428);
-		SeriesDAO.purgeImageSmallFileByRefIdx(3428);
-		SeriesDAO.purgeImageLargeFileByRefIdx(3428);
+//		SeriesDAO.purgeImageSmallFileByRefIdx(3428);
+//		SeriesDAO.purgeImageLargeFileByRefIdx(3428);
 //		SubSeriesDAO.purgeImageLargeFileByRefIdx(3428);
 //		SubSeriesDAO.purgeImageSmallFileByRefIdx(3428);
 		
@@ -330,6 +331,16 @@ public class Main1 {
 		
 //		execute_jPowerBkup_A1();
 //		execute_stagUtil_A1();
+		
+//		System.out.println("result : " + StoredUtil.copyFile("/tmp", "a1", "a1fs.txt", "a2", "a100.txt"));
+//		CategoryDAO.copyImageFileToStorageContentByRefIdx(3428);
+//		SeriesDAO.copySmallImageFileToStorageContentByRefIdx(3428);
+//		SeriesDAO.copyLargeImageFileToStorageContentByRefIdx(3428);
+		
+		SubSeriesDAO.copySmallImageFileToStorageContentByRefIdx(3428);
+		SubSeriesDAO.copyLargeImageFileToStorageContentByRefIdx(3428);
+				
+		
 	}
 
 }

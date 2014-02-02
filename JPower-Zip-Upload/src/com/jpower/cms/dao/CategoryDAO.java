@@ -1,5 +1,6 @@
 package com.jpower.cms.dao;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -11,6 +12,10 @@ import com.jpower.cms.upload.common.MemCache;
 public class CategoryDAO {
 
 	private static String storageHome = FileHelper.getConfigProperty("storage.home");
+	private static String contentHome = FileHelper.getConfigProperty("content.home");
+	private static String stagingDirectory = FileHelper.getConfigProperty("staging.directory");
+	private static String storageDirectory = FileHelper.getConfigProperty("storage.directory");
+	
 	
 	public static String sql1 = "insert into jpt_category (ref_idx, category_id, category_label_eng, category_label_chin, category_image, rec_status, create_date, "
 			+ "update_date, create_user, update_user) "
@@ -39,6 +44,12 @@ public class CategoryDAO {
 			+ "cat.category_image), 'Image file being purged', " 
 			+ "current_timestamp, current_timestamp from jpt_category cat, jpt_rlt_lob_category lob_cat, jpt_lob lob where cat.rec_status = 'DEL' and cat.ref_idx = ? "
 			+ "and cat.category_pk = lob_cat.category_pk and lob_cat.lob_pk = lob.lob_pk";
+	
+	public static String sql6 = "insert into jpt_log (ref_no, severity, category, log_message, remarks_1, create_date, update_date) "
+			+ "select TRIM(CAST(CAST(? AS CHAR(10))AS VARCHAR(10))), 'Info', 'ADDITION-CATEGORY_IMAGE_FILE', "
+			+ "copy_file(?, ?, cat.category_image, ? || (case when upper(lob.sub_lob_id) = 'COMMERCIAL' then 'commercial/1' else (case when upper(lob.sub_lob_id) = 'RESIDENTIAL' then 'residential/1' end) end), cat.category_image), "
+			+ "'Image file being added', current_timestamp, current_timestamp from jpt_category cat, jpt_rlt_lob_category lob_cat, "
+			+ "jpt_lob lob where cat.rec_status = 'ACT' and cat.ref_idx = ? and cat.category_pk = lob_cat.category_pk and lob_cat.lob_pk = lob.lob_pk";
 
 	public static int deleteRecByRefIdx(int refIdx) {
 		int cnt = 0;
@@ -150,4 +161,36 @@ public class CategoryDAO {
 		
 		return cnt;
 	}	
+	
+	public static int copyImageFileToStorageContentByRefIdx(int refIdx) {
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		conn = DBAccess.getDBConnection();
+		try {
+			ps = conn.prepareStatement(sql6);
+			ps.setInt(1, refIdx);
+			ps.setString(2, contentHome);
+			ps.setString(3, stagingDirectory);
+			ps.setString(4, storageDirectory + File.separator);
+			ps.setInt(5, refIdx);
+			cnt = ps.executeUpdate();
+	
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if (ps != null) {ps.close();}
+				if (conn != null) {conn.close();}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		
+		return cnt;
+	}		
 }
