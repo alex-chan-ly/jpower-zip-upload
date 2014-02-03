@@ -337,8 +337,10 @@ public class Main1 {
 //		SeriesDAO.copySmallImageFileToStorageContentByRefIdx(3428);
 //		SeriesDAO.copyLargeImageFileToStorageContentByRefIdx(3428);
 		
-		SubSeriesDAO.copySmallImageFileToStorageContentByRefIdx(3428);
-		SubSeriesDAO.copyLargeImageFileToStorageContentByRefIdx(3428);
+//		SubSeriesDAO.copySmallImageFileToStorageContentByRefIdx(3428);
+//		SubSeriesDAO.copyLargeImageFileToStorageContentByRefIdx(3428);
+		
+		InventoryApplicationProcessor.generateInventoryApplicationWorkbook();
 				
 		
 	}
