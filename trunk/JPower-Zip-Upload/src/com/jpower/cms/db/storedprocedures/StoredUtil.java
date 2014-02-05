@@ -9,6 +9,22 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class StoredUtil {
+	
+//	VALUES SYSCS_UTIL.SYSCS_GET_DATABASE_PROPERTY('derby.database.classpath');
+//	CALL sqlj.install_jar('/home/alexc/workspace_ee/JPower-Zip-Upload/bin/myApp.jar', 'APP.STOREDUTIL', 0);
+//	CALL sqlj.replace_jar('/home/alexc/workspace_ee/JPower-Zip-Upload/bin/myApp.jar', 'APP.STOREDUTIL'); 
+//	CALL sqlj.remove_jar('APP.JPowerJar', 0);
+//	CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY('derby.database.classpath','APP.STOREDUTIL'); 
+//	jar cvf myApp.jar com/jpower/cms/db/storedprocedures/*
+//	CREATE FUNCTION IS_FILE_EXISTS(prefix varchar(1000), path varchar(1000), fileName varchar(1000)) returns INT PARAMETER STYLE JAVA reads 
+//	sql data language JAVA EXTERNAL NAME 'com.jpower.cms.db.storedprocedures.StoredUtil.isFileExist' ;
+//
+//	CREATE FUNCTION PURGE_FILE(prefix varchar(1000), path varchar(1000), fileName varchar(1000)) returns VARCHAR(1000) PARAMETER STYLE JAVA reads 
+//	sql data language JAVA EXTERNAL NAME 'com.jpower.cms.db.storedprocedures.StoredUtil.purgeFile' ;
+//
+//	CREATE FUNCTION COPY_FILE(pathPrefix varchar(1000), srcPath varchar(1000), srFile varchar(1000), dtPath varchar(1000), dtFile varchar(1000)) returns VARCHAR(1000) PARAMETER STYLE JAVA reads 
+//	sql data language JAVA EXTERNAL NAME 'com.jpower.cms.db.storedprocedures.StoredUtil.copyFile' ;
+	
 
 	public static int isFileExist(String pathPrefix, String path,
 			String fileName) {

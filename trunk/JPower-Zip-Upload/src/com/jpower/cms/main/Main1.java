@@ -30,6 +30,7 @@ import com.jpower.cms.upload.common.StagingUtil;
 import com.jpower.cms.upload.common.Util;
 import com.jpower.cms.upload.excel.InventoryApplicationDetailProcessor;
 import com.jpower.cms.upload.excel.InventoryApplicationProcessor;
+import com.jpower.cms.upload.excel.LogProcessor;
 import com.jpower.cms.vo.InventoryApplicationDetailVO;
 import com.jpower.cms.vo.InventoryApplicationVO;
 
@@ -221,7 +222,8 @@ public class Main1 {
 		int seq;
 //		int updateSeq;
 		
-		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-inventory-1.xls");
+//		File f = new File("/home/alexc/Documents/_jPower/jpower-phase-2-inventory-1.xls");
+		File f = new File("/home/alexc/workspace_ee/JPower-Web/JPower/content/staging/jpower-phase-2-19012014.xls");
 		seq = DBUtil.getUploadSequence();
 //		MemCache.setUploadSeq(seq);
 //		updateSeq = DBUtil.getUploadSequence();
@@ -340,8 +342,9 @@ public class Main1 {
 //		SubSeriesDAO.copySmallImageFileToStorageContentByRefIdx(3428);
 //		SubSeriesDAO.copyLargeImageFileToStorageContentByRefIdx(3428);
 		
-		InventoryApplicationProcessor.generateInventoryApplicationWorkbook();
-				
+//		InventoryApplicationProcessor.generateInventoryApplicationWorkbook();
+//		LogProcessor.generateLogDetailWorkbook(3428);
+		execute_inventory1();				
 		
 	}
 
