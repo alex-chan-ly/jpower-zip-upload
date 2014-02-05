@@ -31,9 +31,11 @@ import com.jpower.cms.vo.InventoryApplicationDetailVO;
 import com.jpower.cms.vo.InventoryApplicationVO;
 
 public class ExcelUploader {
-	
-	private static String stagingHome = FileHelper.getConfigProperty("staging.home");
-	private static String stagingDir = FileHelper.getConfigProperty("staging.directory");
+
+	private static String stagingHome = FileHelper
+			.getConfigProperty("staging.home");
+	private static String stagingDir = FileHelper
+			.getConfigProperty("staging.directory");
 
 	public static int preUpload(String zipFile) {
 		int rtnCode = 0;
@@ -46,32 +48,31 @@ public class ExcelUploader {
 		List<InventoryApplicationDetailVO> voDetailList = null;
 		int seq;
 		int rtnCode = -1;
-//		int updateSeq;
-		
+
 		File f = new File(fileName);
 		seq = DBUtil.getUploadSequence();
-//		MemCache.setUploadSeq(seq);
-//		updateSeq = DBUtil.getUploadSequence();
-//		MemCache.setChangeLogKey(updateSeq);
-		
+
 		System.out.println("Seq : " + seq);
-//		System.out.println("ChangeLogKey : " + updateSeq);
-		
+
 		try {
 			Workbook wkb = Workbook.getWorkbook(f);
 			for (int sheet = 0; sheet < wkb.getNumberOfSheets(); sheet++) {
 				Sheet s = wkb.getSheet(sheet);
 				System.out.println("Sheet name : " + s.getName());
 				if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION)) {
-					voList = InventoryApplicationProcessor.processApplicationSheet(s);
+					voList = InventoryApplicationProcessor
+							.processApplicationSheet(s);
 					if (!voList.isEmpty()) {
 						InventoryApplicationDBProcessor.saveToDB(voList, seq);
-					} 
-					
-				} else if (s.getName().equals(Util.EXCEL_INVENTORY_APPLICATION_DETAIL)) {
-					voDetailList = InventoryApplicationDetailProcessor.processApplicationSheet(s);
+					}
+
+				} else if (s.getName().equals(
+						Util.EXCEL_INVENTORY_APPLICATION_DETAIL)) {
+					voDetailList = InventoryApplicationDetailProcessor
+							.processApplicationSheet(s);
 					if (!voDetailList.isEmpty()) {
-						InventoryApplicationDetailDBProcessor.saveToDB(voDetailList, seq);
+						InventoryApplicationDetailDBProcessor.saveToDB(
+								voDetailList, seq);
 					}
 				}
 			}
@@ -82,139 +83,137 @@ public class ExcelUploader {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		}
 		return rtnCode;
 	}
 
 	public static int postUpload(int refIdx) {
-		
+
 		int rtnCount = 0;
-		
-		rtnCount = ApplicationSubSeriesValidator.checkSubSeriesImageSmallNameWithSpaceChar(refIdx) 
-				+ ApplicationSubSeriesValidator.checkSubSeriesImageLargeNameWithSpaceChar(refIdx)
-				+ ApplicationSubSeriesValidator.checkSubSeriesImageSmallExists(refIdx, stagingHome, stagingDir)
-				+ ApplicationSubSeriesValidator.checkSubSeriesImageLargeExists(refIdx, stagingHome, stagingDir) 
-				+ ApplicationSeriesValidator.checkSeriesImageSmallNameWithSpaceChar(refIdx)
-				+ ApplicationSeriesValidator.checkSeriesImageLargeNameWithSpaceChar(refIdx)
-				+ ApplicationSeriesValidator.checkSeriesImageSmallExists(refIdx, stagingHome, stagingDir)
-				+ ApplicationSeriesValidator.checkSeriesImageLargeExists(refIdx, stagingHome, stagingDir)
-				+ ApplicationCategoryValidator.checkCategoryImageNameWithSpaceChar(refIdx)
-				+ ApplicationCategoryValidator.checkCategoryImageExists(refIdx, stagingHome, stagingDir);
-		
+
+		rtnCount = ApplicationSubSeriesValidator
+				.checkSubSeriesImageSmallNameWithSpaceChar(refIdx)
+				+ ApplicationSubSeriesValidator
+						.checkSubSeriesImageLargeNameWithSpaceChar(refIdx)
+				+ ApplicationSubSeriesValidator.checkSubSeriesImageSmallExists(
+						refIdx, stagingHome, stagingDir)
+				+ ApplicationSubSeriesValidator.checkSubSeriesImageLargeExists(
+						refIdx, stagingHome, stagingDir)
+				+ ApplicationSeriesValidator
+						.checkSeriesImageSmallNameWithSpaceChar(refIdx)
+				+ ApplicationSeriesValidator
+						.checkSeriesImageLargeNameWithSpaceChar(refIdx)
+				+ ApplicationSeriesValidator.checkSeriesImageSmallExists(
+						refIdx, stagingHome, stagingDir)
+				+ ApplicationSeriesValidator.checkSeriesImageLargeExists(
+						refIdx, stagingHome, stagingDir)
+				+ ApplicationCategoryValidator
+						.checkCategoryImageNameWithSpaceChar(refIdx)
+				+ ApplicationCategoryValidator.checkCategoryImageExists(refIdx,
+						stagingHome, stagingDir);
+
 		if (rtnCount > 0) {
 			return rtnCount;
 		} else {
-			rtnCount = ApplicationSubSeriesValidator.checkExistForAdd(refIdx) 
-					+ ApplicationSubSeriesValidator.checkNotExistForDel(refIdx) 
-					+ ApplicationSeriesValidator.checkNotExistForDel(refIdx) 
-					+ ApplicationSeriesValidator.checkInconsistentSeriesSequence(refIdx) 
-					+ ApplicationSeriesValidator.checkDuplicateSubSeriesSequence(refIdx) 
-					+ ApplicationCategoryValidator.checkInconsistentCategorySequence(refIdx) 
-					+ ApplicationDetailMaterialValidator.checkExistForAdd(refIdx) 
-					+ ApplicationDetailMaterialValidator.checkNotExistForDel(refIdx);
+			rtnCount = ApplicationSubSeriesValidator.checkExistForAdd(refIdx)
+					+ ApplicationSubSeriesValidator.checkNotExistForDel(refIdx)
+					+ ApplicationSeriesValidator.checkNotExistForDel(refIdx)
+					+ ApplicationSeriesValidator
+							.checkInconsistentSeriesSequence(refIdx)
+					+ ApplicationSeriesValidator
+							.checkDuplicateSubSeriesSequence(refIdx)
+					+ ApplicationCategoryValidator
+							.checkInconsistentCategorySequence(refIdx)
+					+ ApplicationDetailMaterialValidator
+							.checkExistForAdd(refIdx)
+					+ ApplicationDetailMaterialValidator
+							.checkNotExistForDel(refIdx);
 		}
-		
+
 		return rtnCount;
 	}
 
 	public static int[] convertToMasterData(int refIdx) {
-		
+
 		int[] rtnCount = new int[2];
 		int delCount = 0;
 		int addCount = 0;
-		
-		delCount = MaterialDAO.deleteRecByRefIdx(refIdx) 
-				+ SubSeriesDAO.deleteRecByRefIdx(refIdx) 
-				+ RltSeriesSubSeriesDAO.deleteRecByRefIdx(refIdx) 
-				+ SeriesDAO.deleteRecByRefIdx(refIdx) 
+
+		delCount = MaterialDAO.deleteRecByRefIdx(refIdx)
+				+ SubSeriesDAO.deleteRecByRefIdx(refIdx)
+				+ RltSeriesSubSeriesDAO.deleteRecByRefIdx(refIdx)
+				+ SeriesDAO.deleteRecByRefIdx(refIdx)
 				+ RltCategorySeriesDAO.deleteRecByRefIdx(refIdx)
-				+ CategoryDAO.deleteRecByRefIdx(refIdx) 
-				+ RltLobCategoryDAO.deleteRecByRefIdx(refIdx) 
+				+ CategoryDAO.deleteRecByRefIdx(refIdx)
+				+ RltLobCategoryDAO.deleteRecByRefIdx(refIdx)
 				+ LobDAO.deleteRecByRefIdx(refIdx);
-		
-		addCount = MaterialDAO.addRecByRefIdx(refIdx) 
-				+ SubSeriesDAO.addRecByRefIdx(refIdx) 
-				+ SeriesDAO.addRecByRefIdx(refIdx) 
+
+		addCount = MaterialDAO.addRecByRefIdx(refIdx)
+				+ SubSeriesDAO.addRecByRefIdx(refIdx)
+				+ SeriesDAO.addRecByRefIdx(refIdx)
 				+ RltSeriesSubSeriesDAO.addRecByRefIdx(refIdx)
-				+ CategoryDAO.addRecByRefIdx(refIdx) 
+				+ CategoryDAO.addRecByRefIdx(refIdx)
 				+ RltCategorySeriesDAO.addRecByRefIdx(refIdx)
-				+ LobDAO.addRecByRefIdx(refIdx) 
+				+ LobDAO.addRecByRefIdx(refIdx)
 				+ RltLobCategoryDAO.addRecByRefIdx(refIdx);
-		
+
 		rtnCount[0] = delCount;
 		rtnCount[1] = addCount;
-		
+
 		return rtnCount;
 	}
-	
-	public static int execute(String fileName) {
-		
-		int refIdx = 0;
-		int rtnCount = 0;
-		int[] recCount = new int[2];
-		
-		if (preUpload("abc") == 0) {
-			refIdx = upload(fileName);
-			if (refIdx != -1) {
-				rtnCount = postUpload(refIdx);
-				if (rtnCount == 0) {
-					recCount = convertToMasterData(refIdx);
-				}
-			}
-		}
-		return 0;
-	}
-	
+
 	public static int execute_A1(String fileName) {
 
 		int refIdx = 0;
+		int[] recCount = new int[2];
+
+		System.out.println("Starting upload");
+		refIdx = upload(fileName);
+
+		return refIdx;
+	}
+
+	public static int execute_A2(int refIdx) {
+
 		int rtnCount = 0;
 		int[] recCount = new int[2];
 
-		rtnCount = upload(fileName);
+		System.out.println("Starting postUpload");
+		rtnCount = postUpload(refIdx);
+		System.out.println("postUpload count : " + rtnCount);
+		if (rtnCount == 0) {
+			recCount = convertToMasterData(refIdx);
+		}
+		System.out.println("Del count : " + recCount[0]);
+		System.out.println("Add count : " + recCount[1]);
 
-		// if (preUpload() == 0) {
-		// refIdx = upload(fileName);
-		// if (refIdx != -1) {
-		// rtnCount = postUpload(refIdx);
-		// if (rtnCount == 0) {
-		// recCount = convertToMasterData(refIdx);
-		// }
-		// }
-		// }
-		return 0;
-	}
-	
-	public static int execute_A2() {
+		CategoryDAO.purgeImageFileByRefIdx(refIdx);
+		SeriesDAO.purgeImageSmallFileByRefIdx(refIdx);
+		SeriesDAO.purgeImageLargeFileByRefIdx(refIdx);
+		SubSeriesDAO.purgeImageSmallFileByRefIdx(refIdx);
+		SubSeriesDAO.purgeImageLargeFileByRefIdx(refIdx);
 		
-		int refIdx = 0;
-		int rtnCount = 0;
-		int[] recCount = new int[2];
-		
-//		if (preUpload() == 0) {
-//			refIdx = upload(fileName);
-//			if (refIdx != -1) {
-				rtnCount = postUpload(4328);
-				System.out.println("postUpload count : " + rtnCount);
-				if (rtnCount == 0) {
-					recCount = convertToMasterData(4328);
-				}
-//			}
-//		}
-		return 0;
+		CategoryDAO.copyImageFileToStorageContentByRefIdx(refIdx);
+		SeriesDAO.copySmallImageFileToStorageContentByRefIdx(refIdx);
+		SeriesDAO.copyLargeImageFileToStorageContentByRefIdx(refIdx);
+		SubSeriesDAO.copySmallImageFileToStorageContentByRefIdx(refIdx);
+		SubSeriesDAO.copyLargeImageFileToStorageContentByRefIdx(refIdx);
+
+		return rtnCount;
 	}
-	
+
 	public static void main(String[] args) {
-		
-		String stagingHome = FileHelper.getConfigProperty("staging.home");
-		String stagingDir = FileHelper.getConfigProperty("staging.directory");
-		String fileName = "jpower-phase-2-19012014-Amend-unitTest.xls";
-		
-		String fullPath = stagingHome + File.separator + stagingDir + File.separator + fileName; 
-		
-		preUpload("website_26012014.zip");
-		
-//		int cnt = execute_A1(fullPath);
-//		int cnt = execute_A2();
+
+		String fileName = "jpower-phase-2-19012014.xls";
+
+		String fullPath = stagingHome + File.separator + stagingDir
+				+ File.separator + fileName;
+
+		// preUpload("website_26012014.zip");
+
+		int refIdx = execute_A1(fullPath);
+		execute_A2(refIdx);
+
 	}
 }

@@ -3,12 +3,10 @@ package com.jpower.cms.upload.common;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 
 import com.jpower.cms.vo.InventoryApplicationDetailVO;
-import com.jpower.cms.vo.InventoryApplicationVO;
 
 public class InventoryApplicationDetailDBProcessor {
        
