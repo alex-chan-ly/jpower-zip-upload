@@ -43,7 +43,7 @@ public class ExcelUploader {
 		return rtnCode;
 	}
 
-	public static int upload(String fileName) {
+	public static int uploadToWorkingArea(String fileName) {
 		List<InventoryApplicationVO> voList = null;
 		List<InventoryApplicationDetailVO> voDetailList = null;
 		int seq;
@@ -51,8 +51,9 @@ public class ExcelUploader {
 
 		File f = new File(fileName);
 		seq = DBUtil.getUploadSequence();
+		MemCache.setUploadSeq(seq);
 
-		System.out.println("Seq : " + seq);
+		System.out.println("Upload sequence : " + seq);
 
 		try {
 			Workbook wkb = Workbook.getWorkbook(f);
@@ -76,7 +77,9 @@ public class ExcelUploader {
 					}
 				}
 			}
-			rtnCode = seq;
+			
+			rtnCode = 0;
+			
 		} catch (BiffException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,10 +87,11 @@ public class ExcelUploader {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return rtnCode;
 	}
 
-	public static int postUpload(int refIdx) {
+	public static int validateWorkingArea(int refIdx) {
 
 		int rtnCount = 0;
 
@@ -162,58 +166,110 @@ public class ExcelUploader {
 
 		return rtnCount;
 	}
+	
+	public static int process(String fileName) {
+		int rtnCode = -1;
+		int refIdx = -1;
+		int recCount = -1;
+		int[] addDelCount = new int[2];
 
-	public static int execute_A1(String fileName) {
-
-		int refIdx = 0;
-		int[] recCount = new int[2];
-
-		System.out.println("Starting upload");
-		refIdx = upload(fileName);
-
-		return refIdx;
+		System.out.println("Starting upload : " + fileName);
+		
+		rtnCode = uploadToWorkingArea(fileName);
+		refIdx = MemCache.getUploadSeq();
+		
+		System.out.println("REFIDX : " + refIdx);
+		
+		if (rtnCode == 0) {                               
+			System.out.println("Starting working area validation");
+		
+			recCount = validateWorkingArea(refIdx);
+			
+			System.out.println("Working area validation count : " + recCount);
+			
+			if (recCount == 0) {
+				System.out.println("Starting conversion to master data");
+				addDelCount = convertToMasterData(refIdx);
+				System.out.println("Del count : " + addDelCount[0]);
+				System.out.println("Add count : " + addDelCount[1]);
+		
+				if (addDelCount[0] != 0) {
+					processPurgeImageFile(refIdx);	
+				}
+				
+				if (addDelCount[1] != 0) {
+					processCopyImageFile(refIdx);
+				}
+			} else {
+				rtnCode = -1;
+			}
+		}
+		
+		StagingUtil.purgeStagingArea();
+		
+		return rtnCode;
 	}
 
-	public static int execute_A2(int refIdx) {
 
-		int rtnCount = 0;
-		int[] recCount = new int[2];
-
-		System.out.println("Starting postUpload");
-		rtnCount = postUpload(refIdx);
-		System.out.println("postUpload count : " + rtnCount);
-		if (rtnCount == 0) {
-			recCount = convertToMasterData(refIdx);
-		}
-		System.out.println("Del count : " + recCount[0]);
-		System.out.println("Add count : " + recCount[1]);
-
+	public static void processPurgeImageFile(int refIdx) {
 		CategoryDAO.purgeImageFileByRefIdx(refIdx);
 		SeriesDAO.purgeImageSmallFileByRefIdx(refIdx);
 		SeriesDAO.purgeImageLargeFileByRefIdx(refIdx);
 		SubSeriesDAO.purgeImageSmallFileByRefIdx(refIdx);
 		SubSeriesDAO.purgeImageLargeFileByRefIdx(refIdx);
-		
+	}
+	
+	public static void processCopyImageFile(int refIdx) {
 		CategoryDAO.copyImageFileToStorageContentByRefIdx(refIdx);
 		SeriesDAO.copySmallImageFileToStorageContentByRefIdx(refIdx);
 		SeriesDAO.copyLargeImageFileToStorageContentByRefIdx(refIdx);
 		SubSeriesDAO.copySmallImageFileToStorageContentByRefIdx(refIdx);
 		SubSeriesDAO.copyLargeImageFileToStorageContentByRefIdx(refIdx);
-
-		return rtnCount;
 	}
-
+	
 	public static void main(String[] args) {
-
+		int rtnCode = 0;
+		
 		String fileName = "jpower-phase-2-19012014.xls";
+		String zipFileName = "website_26012014.zip";
 
 		String fullPath = stagingHome + File.separator + stagingDir
 				+ File.separator + fileName;
+		
+		preUpload(zipFileName);		
+		
+		rtnCode = process(fullPath);
+		System.out.println("rtnCode : " + rtnCode + ", refIdx : " + MemCache.getUploadSeq());
 
-		// preUpload("website_26012014.zip");
+	}
+	
+	private static String getInventoryExcelFileName(String zipFileName) {
+		String fileName = zipFileName.substring(0, zipFileName.indexOf(".zip")) + ".xls";
+		
+		return fileName;
+	}
+	
+	public static int mainProcess(String zipFileName) {
+		int rtnCode = 0;
+		
+//		String fileName = "jpower-phase-2-19012014.xls";
 
-		int refIdx = execute_A1(fullPath);
-		execute_A2(refIdx);
+//		String fullPath = stagingHome + File.separator + stagingDir
+//				+ File.separator + fileName;
+				
+		String fullPath = stagingHome + File.separator + stagingDir
+				+ File.separator + getInventoryExcelFileName(zipFileName);
+
+		
+		preUpload(zipFileName);		
+		
+		rtnCode = process(fullPath);
+		
+		if (rtnCode == -1) {
+			rtnCode = MemCache.getUploadSeq();
+		}
+		
+		return rtnCode;
 
 	}
 }

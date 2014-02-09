@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	<servlet>
+		<display-name>TestServlet</display-name>
+		<servlet-name>TestServlet</servlet-name>
+		<servlet-class>com.jpower.dispatcher.TestServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<display-name>UploadServlet</display-name>
+		<servlet-name>UploadServlet</servlet-name>
+		<servlet-class>com.jpower.content.servlet.UploadServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<display-name>AuthenServlet</display-name>
+		<servlet-name>AuthenServlet</servlet-name>
+		<servlet-class>com.jpower.content.servlet.AuthenServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<display-name>GeneratePhotoFrameServlet</display-name>
+		<servlet-name>GeneratePhotoFrameServlet</servlet-name>
+		<servlet-class>com.jpower.content.servlet.GeneratePhotoFrameServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<display-name>GenerateInventoryExcelServlet</display-name>
+		<servlet-name>GenerateInventoryExcelServlet</servlet-name>
+		<servlet-class>com.jpower.content.servlet.GenerateInventoryExcelServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<display-name>GenerateLogExcelServlet</display-name>
+		<servlet-name>GenerateLogExcelServlet</servlet-name>
+		<servlet-class>com.jpower.content.servlet.GenerateLogExcelServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>TestServlet</servlet-name>
+		<url-pattern>/servlet/test</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UploadServlet</servlet-name>
+		<url-pattern>/servlet/upload</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>AuthenServlet</servlet-name>
+		<url-pattern>/servlet/authenticate</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GeneratePhotoFrameServlet</servlet-name>
+		<url-pattern>/servlet/generatePF</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GenerateInventoryExcelServlet</servlet-name>
+		<url-pattern>/servlet/generateInventoryExcel</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GenerateLogExcelServlet</servlet-name>
+		<url-pattern>/servlet/generateLogExcel</url-pattern>
+	</servlet-mapping>
+	<listener>
+		<listener-class>com.jpower.cms.upload.common.DBAccess</listener-class>
+	</listener>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>

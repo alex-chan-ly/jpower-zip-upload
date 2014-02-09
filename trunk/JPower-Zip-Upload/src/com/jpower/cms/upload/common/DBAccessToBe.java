@@ -13,7 +13,7 @@ import org.apache.derby.jdbc.EmbeddedConnectionPoolDataSource;
 
 import biz.source_code.miniConnectionPoolManager.MiniConnectionPoolManager;
 
-public class DBAccess implements ServletContextListener {
+public class DBAccessToBe implements ServletContextListener {
 
 	private static MiniConnectionPoolManager poolMgr = null;
 	
@@ -98,11 +98,13 @@ public class DBAccess implements ServletContextListener {
 		}
 	}
 
+	
 	public void contextDestroyed(ServletContextEvent arg0) {
 		shutdownDB();
 		deregisterJDBCDriver();
 	}
 
+	
 	public void contextInitialized(ServletContextEvent arg0) {
 		// TODO Auto-generated method stub
 
