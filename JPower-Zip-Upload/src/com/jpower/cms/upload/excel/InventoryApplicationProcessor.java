@@ -2,6 +2,7 @@ package com.jpower.cms.upload.excel;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -160,13 +161,14 @@ public class InventoryApplicationProcessor {
 		return rtnCode;
 	}
 	
-	public static int generateInventoryApplicationWorkbook() {
+	public static int generateInventoryApplicationWorkbook(OutputStream out) {
 		int rtnCode = 0;
 		List<InventoryApplicationVO> voList = null;
 		List<InventoryApplicationDetailVO> voDetailList = null;
 		
 		try {
-			WritableWorkbook workbook = Workbook.createWorkbook(new File("output.xls"));
+//			WritableWorkbook workbook = Workbook.createWorkbook(new File("output.xls"));
+			WritableWorkbook workbook = Workbook.createWorkbook(out);
 			WritableSheet sheet1 = workbook.createSheet(Util.EXCEL_INVENTORY_APPLICATION, 0);
 			WritableSheet sheet2 = workbook.createSheet(Util.EXCEL_INVENTORY_APPLICATION_DETAIL, 1);
 			

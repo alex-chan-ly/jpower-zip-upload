@@ -2,6 +2,7 @@ package com.jpower.cms.upload.excel;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
 
@@ -74,12 +75,13 @@ public class LogProcessor {
 		return rtnCode;
 	}
 	
-	public static int generateLogDetailWorkbook(int refIdx) {
+	public static int generateLogDetailWorkbook(int refIdx, OutputStream out) {
 		int rtnCode = 0;
 		List<LogVO> voList = null;
 		
 		try {
-			WritableWorkbook workbook = Workbook.createWorkbook(new File("output-log.xls"));
+//			WritableWorkbook workbook = Workbook.createWorkbook(new File("output-log.xls"));
+			WritableWorkbook workbook = Workbook.createWorkbook(out);
 			WritableSheet sheet1 = workbook.createSheet("log-info", 0);
 			
 			generateLogDetailHeaderRow(sheet1);
